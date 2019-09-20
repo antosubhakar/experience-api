@@ -1,0 +1,8 @@
+C:\Repos\BitFlipping\Doctrina\src\ExperienceApi\Common\bin\Release\netstandard2.0\Common.deps.json
+C:\Repos\BitFlipping\Doctrina\src\ExperienceApi\Common\bin\Release\netstandard2.0\Common.dll
+C:\Repos\BitFlipping\Doctrina\src\ExperienceApi\Common\bin\Release\netstandard2.0\Common.pdb
+C:\Repos\BitFlipping\Doctrina\src\ExperienceApi\Common\obj\Release\netstandard2.0\Common.csprojAssemblyReference.cache
+C:\Repos\BitFlipping\Doctrina\src\ExperienceApi\Common\obj\Release\netstandard2.0\Common.AssemblyInfoInputs.cache
+C:\Repos\BitFlipping\Doctrina\src\ExperienceApi\Common\obj\Release\netstandard2.0\Common.AssemblyInfo.cs
+C:\Repos\BitFlipping\Doctrina\src\ExperienceApi\Common\obj\Release\netstandard2.0\Common.dll
+C:\Repos\BitFlipping\Doctrina\src\ExperienceApi\Common\obj\Release\netstandard2.0\Common.pdb
