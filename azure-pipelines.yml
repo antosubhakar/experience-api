@@ -13,8 +13,8 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: 'Client.csproj'
+    projects: '**\*.csproj'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: 'Client.csproj'
+    projects: '**\*.csproj'
