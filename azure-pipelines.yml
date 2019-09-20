@@ -11,7 +11,7 @@ variables:
 
 steps:
 - script: dotnet restore
-- script: dotnet build -c ${configuration}
+- script: dotnet build -c $(configuration)
 
 - publish: $(System.DefaultWorkingDirectory)/**/*.nupkg
   artifact: NuGetPackage
