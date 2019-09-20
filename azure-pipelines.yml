@@ -5,7 +5,7 @@ trigger:
     - master
     - releases/*
 
-# Set variables once
+# Global variables
 variables:
   configuration: Release
 
@@ -13,5 +13,5 @@ steps:
 - script: dotnet restore
 - script: dotnet build -c $(configuration)
 
-- publish: $(System.DefaultWorkingDirectory)/**/*.nupkg
+- publish: $(System.DefaultWorkingDirectory)/bin/$(configuration)
   artifact: NuGetPackage
