@@ -3,18 +3,23 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+
+
 trigger:
-- master
+  batch: true
+  branches:
+    include:
+    - master
+    - releases/*
 
 pool:
   vmImage: 'ubuntu-latest'
 
+# Set variables once
+variables:
+  configuration: Release
+  version: 0.0.1
+
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '**\*.csproj'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**\*.csproj'
+- script: dotnet restore
+- script: dotnet pack -c ${configuration} /p:PackageVersion=$(version)
