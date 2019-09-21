@@ -17,6 +17,8 @@
     <Version>0.0.1</Version>
     <PackageProjectUrl />
     <PackageTags>xapi</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
