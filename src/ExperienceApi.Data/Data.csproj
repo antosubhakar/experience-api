@@ -32,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="LICENSE.txt">
+    <None Include="..\..\LICENSE.txt">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>LICENSE.txt</PackagePath>
     </None>
   </ItemGroup>
 
