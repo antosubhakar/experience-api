@@ -7,14 +7,14 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Copyright>Copyright 2019</Copyright>
     <Company>Bitflipping</Company>
-    <Authors>Rasmus Eeg</Authors>
+    <Authors>Bitflipping</Authors>
     <PackageLicenseUrl></PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/bitflipping-solutions/experienceapi-data</RepositoryUrl>
     <LangVersion>7.1</LangVersion>
     <AssemblyName>Doctrina.ExperienceApi.Data</AssemblyName>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <Version>0.0.1-alpha</Version>
+    <Version>0.0.1</Version>
     <PackageProjectUrl />
     <PackageTags>xapi</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>

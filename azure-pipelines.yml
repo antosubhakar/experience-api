@@ -10,8 +10,15 @@ variables:
   configuration: Release
 
 steps:
-- script: dotnet restore
-- script: dotnet build -c $(configuration)
+- task: DotNetCoreCLI@2
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(configuration)'
 
-- publish: $(System.DefaultWorkingDirectory)/bin/$(configuration)
+- publish: $(System.DefaultWorkingDirectory)/src/Data/bin/$(configuration)
   artifact: NuGetPackage
