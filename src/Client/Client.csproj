@@ -4,24 +4,18 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Doctrina.ExperienceApi.Client</RootNamespace>
     <AssemblyName>Doctrina.ExperienceApi.Client</AssemblyName>
-    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageLicenseFile></PackageLicenseFile>
     <Version>0.0.1-alpha</Version>
     <Copyright>Copyright (c) 2019 - Present BitFlipping</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Company>Bitflipping</Company>
     <Authors>Bitflipping</Authors>
-    <RepositoryUrl>https://github.com/bitflipping-solutions/experienceapi-client</RepositoryUrl>
+    <RepositoryUrl>https://github.com/bitflipping/experience-api</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <UseNugetPackage>False</UseNugetPackage>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\LICENSE.txt">
-      <Pack>True</Pack>
-      <PackagePath>LICENSE.txt</PackagePath>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj" />
