@@ -21,4 +21,6 @@ steps:
     arguments: '--configuration $(configuration)'
 
 - publish: $(System.DefaultWorkingDirectory)/src/Data/bin/$(configuration)
-  artifact: NuGetPackage
+  artifact: Data
+- publish: $(System.DefaultWorkingDirectory)/src/Client/bin/$(configuration)
+  artifact: Client
