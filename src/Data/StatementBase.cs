@@ -7,12 +7,17 @@ namespace Doctrina.ExperienceApi.Data
 {
     public abstract class StatementBase : JsonModel<JToken>, IStatementBase, IAttachmentByHash
     {
-        public StatementBase() : base(null, null) { }
+        public StatementBase() : base(null, null)
+        {
+            Attachments = new AttachmentCollection();
+        }
 
         public StatementBase(JToken jobj) : this(jobj, ApiVersion.GetLatest()) { }
 
         public StatementBase(JToken statement, ApiVersion version) : base(statement, version)
         {
+            Attachments = new AttachmentCollection();
+
             GuardType(statement, JTokenType.Object);
 
             var actor = statement["actor"];

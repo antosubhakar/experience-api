@@ -10,7 +10,7 @@ namespace Doctrina.ExperienceApi.Data
     /// </summary>
     public class Statement : StatementBase
     {
-        public Statement() { }
+        public Statement() : base() { }
         public Statement(string jsonString) : this((JsonString)jsonString) { }
         public Statement(JsonString jsonString) : this(jsonString.ToJToken()) { }
         public Statement(JToken jtoken) : this(jtoken, ApiVersion.GetLatest()) { }
