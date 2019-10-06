@@ -6,5 +6,6 @@
         public const string XExperienceApiConsistentThrough = "X-Experience-API-Consistent-Through";
         public const string XExperienceApiVersion = "X-Experience-API-Version";
         public const string XExperienceApiHash = "X-Experience-API-Hash";
+        public const string Authorization = "Authorization";
     }
 }
