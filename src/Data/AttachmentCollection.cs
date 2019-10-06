@@ -34,13 +34,6 @@ namespace Doctrina.ExperienceApi.Data
             }
         }
 
-        public void AddAttachment(Attachment attachment)
-        {
-            if (!Contains(attachment))
-            {
-                Add(attachment);
-            }
-        }
 
         public Attachment GetAttachment(string sha2)
         {
@@ -60,7 +53,11 @@ namespace Doctrina.ExperienceApi.Data
 
         public void Add(Attachment item)
         {
-            Attachments.Add(item);
+            // TODO: Many it should not fail silently
+            if (!Contains(item))
+            {
+                Attachments.Add(item);
+            }
         }
 
         public void Clear()
@@ -70,6 +67,7 @@ namespace Doctrina.ExperienceApi.Data
 
         public bool Contains(Attachment item)
         {
+            // TODO: Should use a custom implementation of Equals and GetHashCode
             return Attachments.Any(x => x.SHA2 == item.SHA2);
         }
 
