@@ -31,7 +31,7 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
                     { ApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
                     { "Authorization", authHeader.ToString() }
                 })
-                .WithContent(statement.ToJson());
+                .Respond(MediaTypes.Application.Json, statement.ToJson());
 
             var httpClient = mockHttp.ToHttpClient();
             httpClient.BaseAddress = baseAddress;
