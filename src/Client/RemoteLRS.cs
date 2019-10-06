@@ -6,6 +6,7 @@ using Doctrina.ExperienceApi.Data.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -20,9 +21,9 @@ namespace Doctrina.ExperienceApi.Client
     /// <summary>
     /// LRS Client
     /// </summary>
-    public class LRSClient : ILRSClient
+    public sealed class LRSClient : ILRSClient, IDisposable
     {
-        private static HttpClient _client = new HttpClient();
+        public readonly HttpClient HttpClient;
         public readonly ApiVersion Version;
 
         /// <summary>
@@ -46,9 +47,9 @@ namespace Doctrina.ExperienceApi.Client
                 throw new ArgumentException("Password is null or empty.", nameof(password));
             }
 
-            _client.BaseAddress = new Uri(endpoint.TrimEnd('/'));
-            _client.DefaultRequestHeaders.Add(ApiHeaders.XExperienceApiVersion, version.ToString());
-            _client.DefaultRequestHeaders.Authorization = new BasicAuthHeaderValue(username, password);
+            HttpClient.BaseAddress = new Uri(endpoint.EnsureEndsWith("/"));
+            HttpClient.DefaultRequestHeaders.Add(ApiHeaders.XExperienceApiVersion, version.ToString());
+            HttpClient.DefaultRequestHeaders.Authorization = new BasicAuthHeaderValue(username, password);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Doctrina.ExperienceApi.Client
         /// <param name="httpClient"></param>
         /// <param name="authenticationHeader"></param>
         /// <param name="version"></param>
-        public LRSClient(AuthenticationHeaderValue authenticationHeader, ApiVersion version = null, HttpClient httpClient = null)
+        public LRSClient(AuthenticationHeaderValue authenticationHeader, ApiVersion version = null, HttpClient httpClient = null, CultureInfo culture = null)
         {
             if (authenticationHeader is null)
             {
@@ -71,16 +72,22 @@ namespace Doctrina.ExperienceApi.Client
                     throw new ArgumentNullException("httpClient.BaseAddress", "BaseAddress must be set.");
                 }
 
-                _client = httpClient;
+                HttpClient = httpClient;
             }
-
-            if (_client.BaseAddress == null)
+            else
             {
-                throw new ArgumentNullException("BaseAddress", "BaseAddress must be set.");
+                HttpClient = new HttpClient();
             }
 
-            _client.DefaultRequestHeaders.Add(ApiHeaders.XExperienceApiVersion, version.ToString());
-            _client.DefaultRequestHeaders.Authorization = authenticationHeader;
+            if (!HttpClient.BaseAddress.ToString().EndsWith("/"))
+            {
+                HttpClient.BaseAddress = new Uri(HttpClient.BaseAddress.ToString() + "/");
+            }
+
+            Version = version;
+            HttpClient.DefaultRequestHeaders.Add(ApiHeaders.XExperienceApiVersion, version.ToString());
+            HttpClient.DefaultRequestHeaders.Authorization = authenticationHeader;
+            HttpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(culture?.Name ?? CultureInfo.CurrentCulture.Name));
         }
 
         /// <summary>
@@ -89,7 +96,7 @@ namespace Doctrina.ExperienceApi.Client
         /// <returns></returns>
         public async Task<About> GetAbout(CancellationToken cancellation = default)
         {
-            var response = await _client.GetAsync("/about", cancellation);
+            var response = await HttpClient.GetAsync("about", cancellation);
 
             response.EnsureSuccessStatusCode();
 
@@ -114,10 +121,10 @@ namespace Doctrina.ExperienceApi.Client
 
             var parameters = query.ToParameterMap(Version);
 
-            var uriBuilder = new UriBuilder(_client.BaseAddress);
-            uriBuilder.Path += "/statements";
+            var uriBuilder = new UriBuilder(HttpClient.BaseAddress);
+            uriBuilder.Path += "statements";
             uriBuilder.Query = parameters.ToString();
-            var response = await _client.GetAsync(uriBuilder.Uri, cancellationToken);
+            var response = await HttpClient.GetAsync(uriBuilder.Uri, cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
@@ -131,13 +138,13 @@ namespace Doctrina.ExperienceApi.Client
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static async Task<StatementsResult> MoreStatements(Iri more, CancellationToken cancellationToken = default)
+        public async Task<StatementsResult> MoreStatements(Iri more, CancellationToken cancellationToken = default)
         {
             if (more == null)
                 return null;
 
-            var requestUri = new Uri(_client.BaseAddress, (Uri)more);
-            var response = await _client.GetAsync(requestUri, cancellationToken);
+            var requestUri = new Uri(HttpClient.BaseAddress, (Uri)more);
+            var response = await HttpClient.GetAsync(requestUri, cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
@@ -146,11 +153,6 @@ namespace Doctrina.ExperienceApi.Client
             return await responseContent.ReadAsStatementsResultAsync(ApiVersion.GetLatest());
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="result"></param>
-        /// <returns></returns>
         public async Task<StatementsResult> MoreStatements(StatementsResult result, CancellationToken cancellationToken = default)
         {
             return await MoreStatements((Iri)result.More);
@@ -158,7 +160,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task<Statement> SaveStatement(Statement statement, CancellationToken cancellationToken = default)
         {
-            var uriBuilder = new UriBuilder(_client.BaseAddress);
+            var uriBuilder = new UriBuilder(HttpClient.BaseAddress);
             uriBuilder.Path += "/statements";
 
             var jsonContent = new StringContent(statement.ToJson(), Encoding.UTF8, MediaTypes.Application.Json);
@@ -185,14 +187,14 @@ namespace Doctrina.ExperienceApi.Client
                 requestContent = jsonContent;
             }
 
-            var response = await _client.PostAsync(uriBuilder.Uri, requestContent, cancellationToken);
+            var response = await HttpClient.PostAsync(uriBuilder.Uri, requestContent, cancellationToken);
 
             return statement;
         }
 
         public async Task PutStatement(Statement statement, CancellationToken cancellationToken = default)
         {
-            var uriBuilder = new UriBuilder(_client.BaseAddress);
+            var uriBuilder = new UriBuilder(HttpClient.BaseAddress);
             uriBuilder.Path += "/statements";
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query.Add("statementId", statement.Id.ToString());
@@ -217,14 +219,14 @@ namespace Doctrina.ExperienceApi.Client
                 requestContent = multipart;
             }
 
-            var response = await _client.PutAsync(uriBuilder.Uri, requestContent, cancellationToken);
+            var response = await HttpClient.PutAsync(uriBuilder.Uri, requestContent, cancellationToken);
 
             response.EnsureSuccessStatusCode();
         }
 
         public async Task<Statement[]> SaveStatements(Statement[] statements, CancellationToken cancellationToken = default)
         {
-            var uriBuilder = new UriBuilder(_client.BaseAddress);
+            var uriBuilder = new UriBuilder(HttpClient.BaseAddress);
             uriBuilder.Path += "/statements";
 
             var statementCollection = new StatementCollection(statements);
@@ -248,7 +250,7 @@ namespace Doctrina.ExperienceApi.Client
                 postContent = multipartContent;
             }
 
-            var response = await _client.PostAsync(uriBuilder.Uri, postContent);
+            var response = await HttpClient.PostAsync(uriBuilder.Uri, postContent);
 
             response.EnsureSuccessStatusCode();
 
@@ -264,26 +266,20 @@ namespace Doctrina.ExperienceApi.Client
             return statements;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public async Task<Statement> GetStatement(Guid id, bool attachments = false, ResultFormat format = ResultFormat.Exact, CancellationToken cancellationToken = default)
         {
-            var uriBuilder = new UriBuilder(_client.BaseAddress);
-            uriBuilder.Path += "/statements";
+            var uriBuilder = new UriBuilder(HttpClient.BaseAddress);
+            uriBuilder.Path += "statements";
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query.Add("statementId", id.ToString());
             if (attachments == true)
                 query.Add("attachments", "true");
 
-            if (format != ResultFormat.Exact)
-                query.Add("format", ResultFormat.Exact.ToString());
+            query.Add("format", format.ToString());
 
             uriBuilder.Query = query.ToString();
 
-            var response = await _client.GetAsync(uriBuilder.Uri);
+            var response = await HttpClient.GetAsync(uriBuilder.Uri);
 
             response.EnsureSuccessStatusCode();
 
@@ -334,7 +330,7 @@ namespace Doctrina.ExperienceApi.Client
         /// <returns>A voided statement</returns>
         public async Task<Statement> GetVoidedStatement(Guid id, bool attachments = false, ResultFormat format = ResultFormat.Exact, CancellationToken cancellationToken = default)
         {
-            var uriBuilder = new UriBuilder(_client.BaseAddress);
+            var uriBuilder = new UriBuilder(HttpClient.BaseAddress);
             uriBuilder.Path += "/statements";
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query.Add("voidedStatementId", id.ToString());
@@ -344,7 +340,7 @@ namespace Doctrina.ExperienceApi.Client
             if (format != ResultFormat.Exact)
                 query.Add("format", ResultFormat.Exact.ToString());
 
-            var response = await _client.GetAsync(uriBuilder.Uri);
+            var response = await HttpClient.GetAsync(uriBuilder.Uri);
 
             response.EnsureSuccessStatusCode();
 
@@ -417,7 +413,7 @@ namespace Doctrina.ExperienceApi.Client
         #region Activity State
         public async Task<Guid[]> GetStateIds(Iri activityId, Agent agent, Guid? registration = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/state";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -429,7 +425,7 @@ namespace Doctrina.ExperienceApi.Client
 
             builder.Query = query.ToString();
 
-            var response = await _client.GetAsync(builder.Uri, cancellationToken);
+            var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
@@ -440,7 +436,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task<ActivityStateDocument> GetState(string stateId, Iri activityId, Agent agent, Guid? registration = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/state";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -455,7 +451,7 @@ namespace Doctrina.ExperienceApi.Client
 
             builder.Query = query.ToString();
 
-            var response = await _client.GetAsync(builder.Uri, cancellationToken);
+            var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             response.EnsureSuccessStatusCode();
 
@@ -474,7 +470,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task SaveState(ActivityStateDocument state, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/state";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -509,7 +505,7 @@ namespace Doctrina.ExperienceApi.Client
             request.Content = new ByteArrayContent(state.Content);
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(state.ContentType);
 
-            var response = await _client.SendAsync(request, cancellationToken);
+            var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -517,7 +513,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task DeleteState(ActivityStateDocument state, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/state";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -549,7 +545,7 @@ namespace Doctrina.ExperienceApi.Client
                 }
             }
 
-            var response = await _client.SendAsync(request, cancellationToken);
+            var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -557,7 +553,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task ClearState(Iri activityId, Agent agent, Guid? registration = null, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/state";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -588,7 +584,7 @@ namespace Doctrina.ExperienceApi.Client
             //    }
             //}
 
-            var response = await _client.SendAsync(request, cancellationToken);
+            var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -599,7 +595,7 @@ namespace Doctrina.ExperienceApi.Client
         public async Task<Guid[]> GetActivityProfileIds(Iri activityId, DateTimeOffset? since = null, CancellationToken cancellationToken = default)
         {
 
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -608,7 +604,7 @@ namespace Doctrina.ExperienceApi.Client
                 query.Add("since", since.Value.ToString("o"));
             builder.Query = query.ToString();
 
-            var response = await _client.GetAsync(builder.Uri, cancellationToken);
+            var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -620,7 +616,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task<ActivityProfileDocument> GetActivityProfile(string profileId, Iri activityId, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -629,7 +625,7 @@ namespace Doctrina.ExperienceApi.Client
 
             builder.Query = query.ToString();
 
-            var response = await _client.GetAsync(builder.Uri, cancellationToken);
+            var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -648,7 +644,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task SaveActivityProfile(ActivityProfileDocument profile, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -681,7 +677,7 @@ namespace Doctrina.ExperienceApi.Client
             request.Content = new ByteArrayContent(profile.Content);
             request.Content.Headers.ContentType = new MediaTypeHeaderValue(profile.ContentType);
 
-            var response = await _client.SendAsync(request, cancellationToken);
+            var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -689,7 +685,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task DeleteActivityProfile(ActivityProfileDocument profile, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/activities/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -716,7 +712,7 @@ namespace Doctrina.ExperienceApi.Client
                 }
             }
 
-            var response = await _client.SendAsync(request, cancellationToken);
+            var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -726,7 +722,7 @@ namespace Doctrina.ExperienceApi.Client
         #region Agent Profiles
         public async Task<Guid[]> GetAgentProfileIds(Agent agent, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/agents/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -734,7 +730,7 @@ namespace Doctrina.ExperienceApi.Client
 
             builder.Query = query.ToString();
 
-            var response = await _client.GetAsync(builder.Uri, cancellationToken);
+            var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -746,7 +742,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task<AgentProfileDocument> GetAgentProfile(string profileId, Agent agent, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/agents/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -755,7 +751,7 @@ namespace Doctrina.ExperienceApi.Client
 
             builder.Query = query.ToString();
 
-            var response = await _client.GetAsync(builder.Uri, cancellationToken);
+            var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -774,7 +770,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task SaveAgentProfile(AgentProfileDocument profile, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/agents/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -801,7 +797,7 @@ namespace Doctrina.ExperienceApi.Client
                 }
             }
 
-            var response = await _client.SendAsync(request, cancellationToken);
+            var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
@@ -809,7 +805,7 @@ namespace Doctrina.ExperienceApi.Client
 
         public async Task DeleteAgentProfile(AgentProfileDocument profile, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
         {
-            var builder = new UriBuilder(_client.BaseAddress);
+            var builder = new UriBuilder(HttpClient.BaseAddress);
             builder.Path += "/agents/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -836,11 +832,16 @@ namespace Doctrina.ExperienceApi.Client
                 }
             }
 
-            var response = await _client.SendAsync(request, cancellationToken);
+            var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
                 throw new HttpRequestException(response.ReasonPhrase);
         }
         #endregion
+
+        public void Dispose()
+        {
+            HttpClient.Dispose();
+        }
     }
 }
