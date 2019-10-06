@@ -25,7 +25,7 @@ namespace Doctrina.ExperienceApi.Data.Json
 
         public virtual string ToJson(ApiVersion version, ResultFormat format = ResultFormat.Exact)
         {
-            return ToJToken(version, format).ToString(Newtonsoft.Json.Formatting.None);
+            return ToJToken(version, format)?.ToString(Newtonsoft.Json.Formatting.None);
         }
 
         public virtual string ToJson(ResultFormat format = ResultFormat.Exact)
