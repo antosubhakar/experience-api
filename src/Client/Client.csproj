@@ -6,13 +6,16 @@
     <AssemblyName>Doctrina.ExperienceApi.Client</AssemblyName>
     <PackageLicenseFile></PackageLicenseFile>
     <Version>0.0.1-alpha</Version>
-    <Copyright>Copyright (c) 2019 - Present BitFlipping</Copyright>
+    <Copyright>Copyright (c) 2019 - Present Bitflipping.net</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Company>Bitflipping</Company>
-    <Authors>Bitflipping</Authors>
-    <RepositoryUrl>https://github.com/bitflipping/experience-api</RepositoryUrl>
+    <Company>Bitflipping.net</Company>
+    <Authors>bitflipping-net</Authors>
+    <RepositoryUrl>https://github.com/bitflipping-net/experience-api</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageTags>xapi</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <UseNugetPackage>False</UseNugetPackage>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>

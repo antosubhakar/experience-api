@@ -62,7 +62,8 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
                     { "en-GB", "Certificate" },
                 }
             };
-            attachment.SetPayload(File.OpenRead("~/Files/certificates.pdf"));
+            // TODO: Attachment payload
+            // attachment.SetPayload(File.OpenRead("~/Files/certificates.pdf"));
 
             statement.Attachments.Add(attachment);
 
@@ -77,7 +78,7 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
                     { ApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
                     { ApiHeaders.Authorization, authHeader.ToString() }
                 })
-                .Respond(MediaTypes.Multipart.Mixed, statement.To);
+                .Respond(MediaTypes.Multipart.Mixed, statement.ToJson());
 
             var httpClient = mockHttp.ToHttpClient();
             httpClient.BaseAddress = baseAddress;
@@ -94,6 +95,7 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
         [Fact]
         public async Task Post_Single_Statement_With_Multiple_Attachments()
         {
+            await Task.CompletedTask;
             throw new NotImplementedException();
         }
 
@@ -101,18 +103,21 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
         [Fact]
         public async Task Post_Multiple_Statements()
         {
+            await Task.CompletedTask;
             throw new NotImplementedException();
         }
 
         [Fact]
         public async Task Post_Multiple_Statements_With_Single_Attachment()
         {
+            await Task.CompletedTask;
             throw new NotImplementedException();
         }
 
         [Fact]
         public async Task Post_Multiple_Statements_With_Multiple_Attachment()
         {
+            await Task.CompletedTask;
             throw new NotImplementedException();
         }
     }

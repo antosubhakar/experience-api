@@ -12,7 +12,7 @@
     <RepositoryUrl>https://github.com/bitflipping-solutions/experience-api</RepositoryUrl>
     <LangVersion>7.1</LangVersion>
     <AssemblyName>Doctrina.ExperienceApi.Data</AssemblyName>
-    <Version>0.0.1</Version>
+    <Version>0.0.2-alpha</Version>
     <PackageProjectUrl>https://github.com/bitflipping-solutions/experience-api</PackageProjectUrl>
     <PackageTags>xapi</PackageTags>
     <IncludeSymbols>true</IncludeSymbols>
