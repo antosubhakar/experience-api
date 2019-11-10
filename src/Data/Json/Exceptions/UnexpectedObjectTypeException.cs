@@ -7,7 +7,7 @@ namespace Doctrina.ExperienceApi.Data.Json
     /// </summary>
     public class UnexpectedObjectTypeException : JsonTokenModelException
     {
-        public UnexpectedObjectTypeException(JToken token, ObjectType objectType) 
+        public UnexpectedObjectTypeException(JToken token, ObjectType objectType)
             : base(token, $"'{objectType}' is not valid here.")
         {
         }

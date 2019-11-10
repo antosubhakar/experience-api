@@ -2,14 +2,12 @@
 using Doctrina.ExperienceApi.Client.Http.Headers;
 using Doctrina.ExperienceApi.Data;
 using RichardSzalay.MockHttp;
+using Shouldly;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Shouldly;
 
 namespace Doctrina.ExperienceApi.Client.Tests.Statements
 {
@@ -27,7 +25,7 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
             // Setup a respond for the user api (including a wildcard in the URL)
             var request = mockHttp.When(HttpMethod.Put, $"{baseAddress}/statements")
                 .WithQueryString("statementId", statement.Id?.ToString())
-                .WithHeaders(new Dictionary<string,string>{
+                .WithHeaders(new Dictionary<string, string>{
                     { ApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
                     { "Authorization", authHeader.ToString() }
                 })

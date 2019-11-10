@@ -14,7 +14,7 @@ namespace Doctrina.ExperienceApi.Data
     /// </summary>
 
     [JsonObject]
-    public class SubStatement : StatementBase, IStatementObject
+    public class SubStatement : StatementBase, IStatementObject, ISubStatement
     {
         public ObjectType ObjectType => ObjectType.SubStatement;
 

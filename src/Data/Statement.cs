@@ -8,7 +8,7 @@ namespace Doctrina.ExperienceApi.Data
     /// <summary>
     /// The Statement object
     /// </summary>
-    public class Statement : StatementBase
+    public class Statement : StatementBase, IStatement
     {
         public Statement() : base() { }
         public Statement(string jsonString) : this((JsonString)jsonString) { }
@@ -45,15 +45,16 @@ namespace Doctrina.ExperienceApi.Data
             var stored = statement["stored"];
             if (stored != null)
             {
-                stored = ParseDateTimeOffset(stored);
+                Stored = ParseDateTimeOffset(stored);
             }
+
             var authority = statement["authority"];
             if (authority != null)
             {
                 GuardType(authority, JTokenType.Object);
 
                 var objectType = authority["objectType"];
-                if(objectType != null)
+                if (objectType != null)
                 {
                     ObjectType type = ParseObjectType(objectType, ObjectType.Agent, ObjectType.Group);
                     Authority = (Agent)type.CreateInstance(authority, version);

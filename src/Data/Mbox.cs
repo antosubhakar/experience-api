@@ -17,15 +17,21 @@ namespace Doctrina.ExperienceApi.Data
         public Mbox(string value)
         {
             if (string.IsNullOrEmpty(value))
+            {
                 throw new ArgumentNullException("value");
+            }
 
             if (!value.StartsWith("mailto:"))
+            {
                 throw new Exception("Must start with 'mailto:'");
+            }
 
             var email = value.Split(new char[] { ':' })[1];
             var match = Regex.Match(email, emailPattern);
             if (!match.Success)
+            {
                 throw new Exception($"'{email}' is not a valid e-mail.");
+            }
 
             _mbox = value;
         }

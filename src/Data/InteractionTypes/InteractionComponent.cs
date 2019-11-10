@@ -5,9 +5,9 @@ namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
     public class InteractionComponent : JsonModel
     {
-        public InteractionComponent() {}
+        public InteractionComponent() { }
 
-        public InteractionComponent(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) {}
+        public InteractionComponent(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
 
         public InteractionComponent(JToken jobj, ApiVersion version)
         {

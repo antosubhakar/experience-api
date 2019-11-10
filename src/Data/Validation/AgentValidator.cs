@@ -22,13 +22,19 @@ namespace Doctrina.ExperienceApi.Data.Validation
             int count = 0;
 
             if (arg.Mbox != null)
+            {
                 count++;
+            }
 
             if (!string.IsNullOrEmpty(arg.Mbox_SHA1SUM))
+            {
                 count++;
+            }
 
             if (arg.OpenId != null)
+            {
                 count++;
+            }
 
             if (arg.Account != null)
             {
@@ -41,13 +47,19 @@ namespace Doctrina.ExperienceApi.Data.Validation
         private bool MustHaveIdentifier(Agent arg)
         {
             if (arg.Mbox != null)
+            {
                 return true;
+            }
 
             if (!string.IsNullOrEmpty(arg.Mbox_SHA1SUM))
+            {
                 return true;
+            }
 
             if (arg.OpenId != null)
+            {
                 return true;
+            }
 
             if (arg.Account != null)
             {

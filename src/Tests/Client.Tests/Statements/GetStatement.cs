@@ -59,7 +59,7 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
             var client = new LRSClient(AuthHeader, ApiVersion.GetLatest(), httpClient);
 
             var result = await client.GetStatement(
-                statement.Id.Value, 
+                statement.Id.Value,
                 format: ResultFormat.Cannonical
             );
 

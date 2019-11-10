@@ -6,7 +6,7 @@ namespace Doctrina.ExperienceApi.Client.Http.Headers
 {
     public class BasicAuthHeaderValue : AuthenticationHeaderValue
     {
-        public BasicAuthHeaderValue(string username, string password) 
+        public BasicAuthHeaderValue(string username, string password)
             : base("Basic", FormatBasicAuth(username, password))
         {
         }

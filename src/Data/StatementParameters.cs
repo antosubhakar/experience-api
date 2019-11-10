@@ -102,21 +102,27 @@ namespace Doctrina.ExperienceApi.Data
         {
             var props = this.GetType().GetProperties();
             var fields = new Dictionary<string, string>();
-            
+
             foreach (var prop in props)
             {
                 var info = this.GetType().GetProperty(prop.Name);
                 if (info == null)
+                {
                     continue;
+                }
 
                 object retval = info.GetValue(this, null);
                 if (retval == null)
+                {
                     continue;
+                }
 
                 Type type = info.GetType();
                 object defaultValue = type.IsValueType ? Activator.CreateInstance(type) : null;
                 if (object.Equals(retval, defaultValue))
+                {
                     continue;
+                }
 
                 fields.Add(prop.Name.ToLowerInvariant(), retval.ToString());
             }

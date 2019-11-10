@@ -53,7 +53,9 @@ namespace Doctrina.ExperienceApi.Client
 
             var boundary = ContentType.Parameters.FirstOrDefault(x => x.Name == "boundary");
             if (boundary == null || string.IsNullOrWhiteSpace(boundary.Value))
+            {
                 throw new Exception("Content-Type parameter boundary is null or empty.");
+            }
 
             var multipartReader = new MultipartReader(boundary.Value, Stream);
             var section = await multipartReader.ReadNextSectionAsync();

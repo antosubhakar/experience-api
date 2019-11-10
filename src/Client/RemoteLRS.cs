@@ -141,7 +141,9 @@ namespace Doctrina.ExperienceApi.Client
         public async Task<StatementsResult> MoreStatements(Iri more, CancellationToken cancellationToken = default)
         {
             if (more == null)
+            {
                 return null;
+            }
 
             var requestUri = new Uri(HttpClient.BaseAddress, (Uri)more);
             var response = await HttpClient.GetAsync(requestUri, cancellationToken);
@@ -273,7 +275,9 @@ namespace Doctrina.ExperienceApi.Client
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query.Add("statementId", id.ToString());
             if (attachments == true)
+            {
                 query.Add("attachments", "true");
+            }
 
             query.Add("format", format.ToString());
 
@@ -335,10 +339,14 @@ namespace Doctrina.ExperienceApi.Client
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query.Add("voidedStatementId", id.ToString());
             if (attachments == true)
+            {
                 query.Add("attachments", "true");
+            }
 
             if (format != ResultFormat.Exact)
+            {
                 query.Add("format", ResultFormat.Exact.ToString());
+            }
 
             var response = await HttpClient.GetAsync(uriBuilder.Uri);
 
@@ -421,7 +429,9 @@ namespace Doctrina.ExperienceApi.Client
             query.Add("agent", agent.ToString());
 
             if (registration.HasValue)
+            {
                 query.Add("registration", registration.Value.ToString("o"));
+            }
 
             builder.Query = query.ToString();
 
@@ -479,7 +489,9 @@ namespace Doctrina.ExperienceApi.Client
             query.Add("agent", state.Agent.ToString());
 
             if (state.Registration.HasValue)
+            {
                 query.Add("registration", state.Registration.Value.ToString("o"));
+            }
 
             builder.Query = query.ToString();
 
@@ -489,7 +501,9 @@ namespace Doctrina.ExperienceApi.Client
             if (matchType.HasValue)
             {
                 if (state.Tag == null)
+                {
                     throw new NullReferenceException("ETag");
+                }
 
                 switch (matchType.Value)
                 {
@@ -508,7 +522,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
         }
 
         public async Task DeleteState(ActivityStateDocument state, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
@@ -522,7 +538,9 @@ namespace Doctrina.ExperienceApi.Client
             query.Add("agent", state.Agent.ToString());
 
             if (state.Registration.HasValue)
+            {
                 query.Add("registration", state.Registration.Value.ToString("o"));
+            }
 
             builder.Query = query.ToString();
 
@@ -532,7 +550,9 @@ namespace Doctrina.ExperienceApi.Client
             if (matchType.HasValue)
             {
                 if (state.Tag == null)
+                {
                     throw new NullReferenceException("ETag");
+                }
 
                 switch (matchType.Value)
                 {
@@ -548,7 +568,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
         }
 
         public async Task ClearState(Iri activityId, Agent agent, Guid? registration = null, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
@@ -561,7 +583,9 @@ namespace Doctrina.ExperienceApi.Client
             query.Add("agent", agent.ToString());
 
             if (registration.HasValue)
+            {
                 query.Add("registration", registration.Value.ToString("o"));
+            }
 
             builder.Query = query.ToString();
 
@@ -587,7 +611,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
         }
         #endregion
 
@@ -601,13 +627,18 @@ namespace Doctrina.ExperienceApi.Client
             var query = HttpUtility.ParseQueryString(string.Empty);
             query.Add("activityId", activityId.ToString());
             if (since.HasValue)
+            {
                 query.Add("since", since.Value.ToString("o"));
+            }
+
             builder.Query = query.ToString();
 
             var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
 
             JsonString strResponse = await response.Content.ReadAsStringAsync();
 
@@ -628,7 +659,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
 
             var profile = new ActivityProfileDocument
             {
@@ -652,7 +685,9 @@ namespace Doctrina.ExperienceApi.Client
             query.Add("activityId", profile.ActivityId.ToString());
 
             if (profile.Registration.HasValue)
+            {
                 query.Add("registration", profile.Registration.Value.ToString("o"));
+            }
 
             builder.Query = query.ToString();
 
@@ -661,7 +696,9 @@ namespace Doctrina.ExperienceApi.Client
             if (matchType.HasValue)
             {
                 if (profile.Tag == null)
+                {
                     throw new NullReferenceException("ETag");
+                }
 
                 switch (matchType.Value)
                 {
@@ -680,7 +717,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
         }
 
         public async Task DeleteActivityProfile(ActivityProfileDocument profile, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
@@ -699,7 +738,9 @@ namespace Doctrina.ExperienceApi.Client
             if (matchType.HasValue)
             {
                 if (profile.Tag == null)
+                {
                     throw new NullReferenceException("ETag");
+                }
 
                 switch (matchType.Value)
                 {
@@ -715,7 +756,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
         }
         #endregion
 
@@ -733,7 +776,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
 
             JsonString strResponse = await response.Content.ReadAsStringAsync();
 
@@ -754,7 +799,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.GetAsync(builder.Uri, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
 
             var profile = new AgentProfileDocument
             {
@@ -784,7 +831,9 @@ namespace Doctrina.ExperienceApi.Client
             if (matchType.HasValue)
             {
                 if (profile.Tag == null)
+                {
                     throw new NullReferenceException("ETag");
+                }
 
                 switch (matchType.Value)
                 {
@@ -800,7 +849,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
         }
 
         public async Task DeleteAgentProfile(AgentProfileDocument profile, ETagMatch? matchType = null, CancellationToken cancellationToken = default)
@@ -819,7 +870,9 @@ namespace Doctrina.ExperienceApi.Client
             if (matchType.HasValue)
             {
                 if (profile.Tag == null)
+                {
                     throw new NullReferenceException("ETag");
+                }
 
                 switch (matchType.Value)
                 {
@@ -835,7 +888,9 @@ namespace Doctrina.ExperienceApi.Client
             var response = await HttpClient.SendAsync(request, cancellationToken);
 
             if (!response.IsSuccessStatusCode)
+            {
                 throw new HttpRequestException(response.ReasonPhrase);
+            }
         }
         #endregion
 

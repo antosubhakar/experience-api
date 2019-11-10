@@ -107,7 +107,7 @@ namespace Doctrina.ExperienceApi.Data.InteractionTypes
             }
 
             var interactionType = _types.FirstOrDefault(x => x.Alias == type);
-            if(interactionType != null)
+            if (interactionType != null)
             {
                 return interactionType;
             }

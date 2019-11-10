@@ -7,7 +7,8 @@ namespace Doctrina.ExperienceApi.Data.Validation
     {
         public ContextValidator()
         {
-            RuleFor(x => x.Instructor).NotEmpty().DependentRules(() => {
+            RuleFor(x => x.Instructor).NotEmpty().DependentRules(() =>
+            {
                 RuleFor(x => x.Instructor).SetValidator(new AgentValidator())
                 .When(x => x.Instructor.ObjectType == ObjectType.Agent);
 

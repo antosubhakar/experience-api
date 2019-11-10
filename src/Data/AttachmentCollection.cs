@@ -21,7 +21,7 @@ namespace Doctrina.ExperienceApi.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="AttachmentCollection"/> class.
         /// </summary>
-        public AttachmentCollection() {}
+        public AttachmentCollection() { }
         public AttachmentCollection(JsonString jsonString) : this(jsonString.ToJToken()) { }
         public AttachmentCollection(JToken jarr) : this(jarr, ApiVersion.GetLatest()) { }
         public AttachmentCollection(JToken jarr, ApiVersion version)
@@ -93,7 +93,7 @@ namespace Doctrina.ExperienceApi.Data
 
         public override JArray ToJToken(ApiVersion version, ResultFormat format)
         {
-            if(Attachments.Count == 0)
+            if (Attachments.Count == 0)
             {
                 return null;
             }

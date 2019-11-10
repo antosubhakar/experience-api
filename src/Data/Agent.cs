@@ -1,5 +1,7 @@
-﻿using Doctrina.ExperienceApi.Data.Json;
+﻿using Doctrina.ExperienceApi.Data.Helpers;
+using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace Doctrina.ExperienceApi.Data
@@ -71,7 +73,7 @@ namespace Doctrina.ExperienceApi.Data
         public string Name { get; set; }
 
         /// <summary>
-        /// The required format is "mailto:email address". 
+        /// The required format is "mailto:email address".
         /// Only email addresses that have only ever been and will ever be assigned to this Agent, but no others, SHOULD be used for this property and mbox_sha1sum.
         /// </summary>
         public Mbox Mbox { get; set; }
@@ -95,27 +97,27 @@ namespace Doctrina.ExperienceApi.Data
         {
             var jobj = base.ToJToken(version, format);
 
-            if(Name != null)
+            if (Name != null)
             {
                 jobj["name"] = Name;
             }
 
-            if(Mbox != null)
+            if (Mbox != null)
             {
                 jobj["mbox"] = Mbox.ToString();
             }
 
-            if(Mbox_SHA1SUM != null)
+            if (Mbox_SHA1SUM != null)
             {
                 jobj["mbox_sha1sum"] = Mbox_SHA1SUM;
             }
 
-            if(OpenId != null)
+            if (OpenId != null)
             {
                 jobj["openid"] = OpenId.ToString();
             }
 
-            if(Account != null)
+            if (Account != null)
             {
                 jobj["account"] = Account.ToJToken(version, format);
             }
@@ -160,6 +162,47 @@ namespace Doctrina.ExperienceApi.Data
             }
 
             return ids;
+        }
+
+        /// <summary>
+        /// Compute IFI hash
+        /// </summary>
+        public string ComputeHash()
+        {
+            Func<string, string> computeHash = SHAHelper.SHA1.ComputeHash;
+
+            if (Mbox != null)
+            {
+                return computeHash(Mbox.ToString());
+            }
+
+            if (!string.IsNullOrWhiteSpace(Mbox_SHA1SUM))
+            {
+                // We need to re-compute for mbox and mbox_sha1sum not being equal.
+                return computeHash(Mbox_SHA1SUM);
+            }
+
+            if (OpenId != null)
+            {
+                return OpenId.ComputeHash();
+            }
+
+            if (Account != null)
+            {
+                var uriBuilder = new UriBuilder(Account.HomePage)
+                {
+                    UserName = Account.Name
+                };
+                return computeHash(uriBuilder.ToString());
+            }
+
+            if (ObjectType == ObjectType.Group)
+            {
+                // Is anonymous group, generate unique id
+                return computeHash(Guid.NewGuid().ToString());
+            }
+
+            throw new InvalidOperationException("Cannot compute hash for agent without identifier.");
         }
 
         public override bool Equals(object obj)

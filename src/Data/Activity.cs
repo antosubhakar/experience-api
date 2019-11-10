@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Doctrina.ExperienceApi.Data
 {
-    public class Activity : StatementObjectBase, IStatementObject
+    public class Activity : StatementObjectBase, IStatementObject, IActivity
     {
         public Activity() { }
 

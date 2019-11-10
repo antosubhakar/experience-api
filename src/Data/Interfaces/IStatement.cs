@@ -6,7 +6,7 @@ namespace Doctrina.ExperienceApi.Data
     {
         Guid? Id { get; set; }
         Agent Actor { get; set; }
-        Attachment[] Attachments { get; set; }
+        AttachmentCollection Attachments { get; set; }
         Agent Authority { get; set; }
         Context Context { get; set; }
         IStatementObject Object { get; set; }
@@ -15,5 +15,7 @@ namespace Doctrina.ExperienceApi.Data
         DateTimeOffset? Timestamp { get; set; }
         Verb Verb { get; set; }
         ApiVersion Version { get; set; }
+        string ToJson();
+        void Stamp();
     }
 }

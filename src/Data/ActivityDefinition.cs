@@ -7,8 +7,8 @@ namespace Doctrina.ExperienceApi.Data
 {
     public class ActivityDefinition : JsonModel
     {
-        public ActivityDefinition() {}
-        public ActivityDefinition(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) {}
+        public ActivityDefinition() { }
+        public ActivityDefinition(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
         public ActivityDefinition(JToken obj, ApiVersion version)
         {
             GuardType(obj, JTokenType.Object);
@@ -83,7 +83,7 @@ namespace Doctrina.ExperienceApi.Data
                 obj["moreInfo"] = MoreInfo.ToString();
             }
 
-            if(Extensions != null)
+            if (Extensions != null)
             {
                 obj["extensions"] = Extensions.ToJToken(version, format);
             }

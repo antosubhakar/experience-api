@@ -37,10 +37,14 @@ namespace Doctrina.ExperienceApi.Data
             string strDuration = s.Trim();
 
             if (!strDuration.StartsWith("P"))
+            {
                 throw new FormatException("Duration must start with the designator 'P' (for period).");
+            }
 
             if (strDuration.Length == 1)
+            {
                 throw new FormatException("'P' designator is not valid for duration alone.");
+            }
 
             Years = null;
             Months = null;

@@ -7,7 +7,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
         public VerbValidator()
         {
             RuleFor(x => x.Id).NotNull();
-            RuleFor(x => x.Display).SetValidator(new LanguageMapValidator()).When(verb=> verb.Display != null);
+            RuleFor(x => x.Display).SetValidator(new LanguageMapValidator()).When(verb => verb.Display != null);
         }
     }
 }

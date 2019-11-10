@@ -28,7 +28,7 @@ namespace Doctrina.ExperienceApi.Data
 
         public IStatementObject CreateInstance(JToken jsonToken, ApiVersion version)
         {
-            if(Type == typeof(Agent))
+            if (Type == typeof(Agent))
             {
                 return new Agent(jsonToken, version);
             }

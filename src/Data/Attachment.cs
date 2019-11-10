@@ -121,7 +121,7 @@ namespace Doctrina.ExperienceApi.Data
                 SHA2 = SHAHelper.SHA2.ComputeHash(bytes);
             }
 
-            if(Length <= 0)
+            if (Length <= 0)
             {
                 Length = bytes.Length;
             }

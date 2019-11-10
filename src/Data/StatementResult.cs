@@ -9,9 +9,9 @@ namespace Doctrina.ExperienceApi.Data
     /// </summary>
     public class StatementsResult : JsonModel, IStatementsResult, IAttachmentByHash
     {
-        public StatementsResult() {}
+        public StatementsResult() { }
 
-        public StatementsResult(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) {}
+        public StatementsResult(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
 
         public StatementsResult(JToken jobj, ApiVersion version)
         {

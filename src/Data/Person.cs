@@ -44,10 +44,14 @@ namespace Doctrina.ExperienceApi.Data
         public void Add(Agent agent)
         {
             if (agent == null)
+            {
                 throw new ArgumentNullException("agent");
+            }
 
             if (agent.ObjectType == ExperienceApi.Data.ObjectType.Group)
+            {
                 throw new ArgumentException("Groups are not allowed within an Person Object.");
+            }
 
             if (agent.Account != null)
             {

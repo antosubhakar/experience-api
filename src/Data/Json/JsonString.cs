@@ -6,7 +6,7 @@ namespace Doctrina.ExperienceApi.Data.Json
 {
     public struct JsonString
     {
-        private string _jsonString;
+        private readonly string _jsonString;
 
         public JsonString(string jsonString)
         {

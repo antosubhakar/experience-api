@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Doctrina.ExperienceApi.Data
 {
     [JsonObject]
-    public class StatementRef : StatementObjectBase, IStatementObject
+    public class StatementRef : StatementObjectBase, IStatementObject, IStatementRef
     {
         public StatementRef() { }
         public StatementRef(JsonString jsonString) : this(jsonString.ToJToken()) { }

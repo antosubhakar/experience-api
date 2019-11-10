@@ -84,7 +84,7 @@ namespace Doctrina.ExperienceApi.Data.Json
 
             string strGuid = token.Value<string>();
 
-            if(Guid.TryParse(strGuid, out Guid result))
+            if (Guid.TryParse(strGuid, out Guid result))
             {
                 return result;
             }
@@ -123,9 +123,9 @@ namespace Doctrina.ExperienceApi.Data.Json
         /// <param name="types"></param>
         public void GuardType(JToken token, params JTokenType[] types)
         {
-            if(!types.Contains(token.Type))
+            if (token == null || !types.Contains(token.Type))
             {
-                if(types.Length == 1)
+                if (types.Length == 1)
                 {
                     throw new InvalidTokenTypeException(token, types[0]);
                 }

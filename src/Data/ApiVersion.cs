@@ -1,12 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Doctrina.ExperienceApi.Data
 {
     public sealed class ApiVersion
     {
-        private string _version;
+        private readonly string _version;
 
         public static readonly ApiVersion V103 = new ApiVersion("1.0.3");
         public static readonly ApiVersion V102 = new ApiVersion("1.0.2");

@@ -31,10 +31,10 @@ namespace Doctrina.ExperienceApi.Data
                 GuardType(instructor, JTokenType.Object);
 
                 ObjectType objectType = instructor["objectType"] != null ?
-                    (ObjectType)instructor["objectType"].Value<string>() : 
+                    (ObjectType)instructor["objectType"].Value<string>() :
                     ObjectType.Agent;
 
-                if(objectType != null && objectType == ObjectType.Group)
+                if (objectType != null && objectType == ObjectType.Group)
                 {
                     Instructor = new Group(instructor, version);
                 }

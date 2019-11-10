@@ -59,7 +59,7 @@ namespace Doctrina.ExperienceApi.Data
         /// <returns></returns>
         public string ComputeHash()
         {
-            return SHAHelper.SHA1.ComputeHash(_iriString);
+            return SHAHelper.SHA1.ComputeHash(_iriString.ToLowerInvariant());
         }
 
         public override bool Equals(object obj)

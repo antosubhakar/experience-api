@@ -13,7 +13,7 @@ namespace Doctrina.ExperienceApi.Data
         public LanguageMap() { }
         public LanguageMap(IEnumerable<KeyValuePair<string, string>> values)
         {
-            foreach(var item in values)
+            foreach (var item in values)
             {
                 Add(item);
             }
@@ -29,7 +29,7 @@ namespace Doctrina.ExperienceApi.Data
             {
                 GuardType(item.Value, JTokenType.String);
 
-                if(!CultureHelper.IsValidCultureName(item.Key))
+                if (!CultureHelper.IsValidCultureName(item.Key))
                 {
                     throw new CultureNameException(languageMap, item.Key);
                 }
@@ -64,7 +64,7 @@ namespace Doctrina.ExperienceApi.Data
 
         public ICollection<string> Values => _values.Values;
 
-        
+
 
         public void Add(string key, string value)
         {

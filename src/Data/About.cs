@@ -1,6 +1,4 @@
-﻿using Doctrina.ExperienceApi.Data.Json;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -25,13 +23,13 @@ namespace Doctrina.ExperienceApi.Data
                 writer.WriteStartObject();
                 writer.WritePropertyName("version");
                 writer.WriteStartArray();
-                foreach(var strVersion in Version)
+                foreach (var strVersion in Version)
                 {
                     writer.WriteValue(strVersion);
                 }
                 writer.WriteEndArray();
                 writer.WritePropertyName("extensions");
-                if(Extensions != null)
+                if (Extensions != null)
                 {
                     writer.WriteRaw(Extensions.ToJson());
                 }

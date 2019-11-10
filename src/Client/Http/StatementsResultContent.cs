@@ -1,5 +1,4 @@
-﻿using Doctrina.ExperienceApi;
-using Doctrina.ExperienceApi.Data;
+﻿using Doctrina.ExperienceApi.Data;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
@@ -90,7 +89,9 @@ namespace Doctrina.ExperienceApi.Client.Http
             MultipartSection section = await multipartReader.ReadNextSectionAsync();
             int sectionIndex = 0;
             if (section == null)
+            {
                 return null;
+            }
 
             StatementsResult result = null;
 
