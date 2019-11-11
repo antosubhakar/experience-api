@@ -37,6 +37,8 @@ namespace Doctrina.ExperienceApi.Data
             {
                 Other = new ActivityCollection(other, version);
             }
+
+            GuardAdditionalProperties((JObject)contextActivities, "parent", "category", "grouping", "other");
         }
 
         /// <summary>

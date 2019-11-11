@@ -65,6 +65,8 @@ namespace Doctrina.ExperienceApi.Data
         {
             var jobj = base.ToJToken(version, format);
 
+            jobj["objectType"] = ObjectType.ToString();
+
             return jobj;
         }
 
