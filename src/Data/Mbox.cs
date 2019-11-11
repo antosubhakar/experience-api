@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -18,19 +19,19 @@ namespace Doctrina.ExperienceApi.Data
         {
             if (string.IsNullOrEmpty(value))
             {
-                throw new ArgumentNullException("value");
+                throw new MboxFormatException("value");
             }
 
             if (!value.StartsWith("mailto:"))
             {
-                throw new Exception("Must start with 'mailto:'");
+                throw new MboxFormatException("Must start with 'mailto:'");
             }
 
             var email = value.Split(new char[] { ':' })[1];
             var match = Regex.Match(email, emailPattern);
             if (!match.Success)
             {
-                throw new Exception($"'{email}' is not a valid e-mail.");
+                throw new MboxFormatException($"'{email}' is not a valid e-mail.");
             }
 
             _mbox = value;

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 
 namespace Doctrina.ExperienceApi.Data.Json
 {
@@ -6,6 +7,12 @@ namespace Doctrina.ExperienceApi.Data.Json
     {
         public JsonTokenModelException(JToken token, string message)
             : base(FormatMessage(message, token))
+        {
+            Token = token;
+        }
+
+        public JsonTokenModelException(JToken token, Exception innerException)
+            : base(FormatMessage(innerException.Message, token), innerException)
         {
             Token = token;
         }

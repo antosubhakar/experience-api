@@ -1,4 +1,5 @@
-﻿using Doctrina.ExperienceApi.Data.Helpers;
+﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Data.Helpers;
 using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -37,7 +38,14 @@ namespace Doctrina.ExperienceApi.Data
             if (mbox != null)
             {
                 GuardType(mbox, JTokenType.String);
-                Mbox = new Mbox(mbox.Value<string>());
+                try
+                {
+                    Mbox = new Mbox(mbox.Value<string>());
+                }
+                catch (MboxFormatException ex)
+                {
+                    throw new JsonTokenModelException(mbox, ex);
+                }
             }
 
             var mbox_sha1sum = jobj["mbox_sha1sum"];
@@ -51,7 +59,14 @@ namespace Doctrina.ExperienceApi.Data
             if (openid != null)
             {
                 GuardType(openid, JTokenType.String);
-                OpenId = new Iri(openid.Value<string>());
+                try
+                {
+                    OpenId = new Iri(openid.Value<string>());
+                }
+                catch (IriFormatException ex)
+                {
+                    throw new JsonTokenModelException(openid, ex);
+                }
             }
 
             var account = jobj["account"];

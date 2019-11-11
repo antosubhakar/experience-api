@@ -23,7 +23,14 @@ namespace Doctrina.ExperienceApi.Data
             if (homePage != null)
             {
                 GuardType(homePage, JTokenType.String);
-                HomePage = new Uri(jobj.Value<string>("homePage"));
+                try
+                {
+                    HomePage = new Uri(jobj.Value<string>("homePage"));
+                }
+                catch (Exception ex)
+                {
+                    throw new JsonTokenModelException(homePage, ex);
+                }
             }
 
             var name = jobj["name"];

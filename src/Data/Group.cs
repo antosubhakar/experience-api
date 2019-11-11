@@ -8,12 +8,17 @@ namespace Doctrina.ExperienceApi.Data
     //[JSchemaGenerationProvider(typeof(GroupSchema))]
     public class Group : Agent
     {
-        public Group() { }
+        public Group()
+        {
+            Member = new HashSet<Agent>();
+        }
 
         public Group(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
 
         public Group(JToken group, ApiVersion version) : base(group, version)
         {
+            Member = new HashSet<Agent>();
+            
             GuardType(group, JTokenType.Object);
 
             var members = group["member"];
@@ -56,7 +61,7 @@ namespace Doctrina.ExperienceApi.Data
         {
             var jobj = base.ToJToken(version, format);
 
-            if (Member != null && Member.Count > 0)
+            if (Member.Count > 0)
             {
                 var jarr = new JArray();
                 foreach (var mem in Member)
