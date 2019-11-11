@@ -20,10 +20,10 @@ namespace Doctrina.ExperienceApi.Data.Validation
                 .Must(auth =>
                 {
                     var grp = auth as Group;
-                    return grp.Member.Count == 2;
+                    return grp.Member.Count == 2 && auth.IsAnonymous();
                 })
                 .When(x => x.Authority != null && x.Authority.ObjectType == ObjectType.Group)
-                .WithMessage("When 3-legged OAuth, the group must have 2 Agents. The two Agents represent an application and user together.");
+                .WithMessage("When 3-legged OAuth, the anonymous group must have 2 Agents. The two Agents represent an application and user together.");
 
             RuleFor(x => x.Object.ObjectType)
                 .Equal(ObjectType.StatementRef)
