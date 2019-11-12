@@ -15,6 +15,8 @@ namespace Doctrina.ExperienceApi.Data
     {
         private readonly string _iriString;
 
+        public Iri() { }
+
         public Iri(string iriString)
         {
             try
