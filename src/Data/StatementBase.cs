@@ -53,9 +53,10 @@ namespace Doctrina.ExperienceApi.Data
                 Context = new Context(statement["context"], version);
             }
 
-            if (statement["timestamp"] != null)
+            var timestamp = statement["timestamp"];
+            if (timestamp != null)
             {
-                Timestamp = DateTimeOffset.Parse(statement.Value<string>("timestamp"));
+                Timestamp = ParseDateTimeOffset(timestamp);
             }
 
             if (statement["attachments"] != null)

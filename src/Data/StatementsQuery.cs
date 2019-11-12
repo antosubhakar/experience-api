@@ -53,13 +53,13 @@ namespace Doctrina.ExperienceApi.Data
         /// Only Statements stored since the specified Timestamp (exclusive) are returned.	
         /// </summary>
         [FromQuery(Name = "since")]
-        public DateTime? Since { get; set; }
+        public DateTimeOffset? Since { get; set; }
 
         /// <summary>
         /// Only Statements stored at or before the specified Timestamp are returned.
         /// </summary>
         [FromQuery(Name = "until")]
-        public DateTime? Until { get; set; }
+        public DateTimeOffset? Until { get; set; }
 
         /// <summary>
         /// Maximum number of Statements to return. 0 indicates return the maximum the server will allow.
