@@ -1,5 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Client.Http;
 using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Exceptions;
 using Doctrina.ExperienceApi.Data.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using System;
@@ -38,7 +39,7 @@ namespace Doctrina.ExperienceApi.Client
                 return await ReadAsMultipart<TResult>();
             }
 
-            return default(TResult);
+            throw new JsonModelReaderException($"Unsupported media type: {ContentType.MediaType}");
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace Doctrina.ExperienceApi.Client
             var boundary = ContentType.Parameters.FirstOrDefault(x => x.Name == "boundary");
             if (boundary == null || string.IsNullOrWhiteSpace(boundary.Value))
             {
-                throw new Exception("Content-Type parameter boundary is null or empty.");
+                throw new JsonModelReaderException("Content-Type parameter boundary is null or empty.");
             }
 
             var multipartReader = new MultipartReader(boundary.Value, Stream);
@@ -67,7 +68,7 @@ namespace Doctrina.ExperienceApi.Client
                     var sectionContentType = MediaTypeHeaderValue.Parse(section.ContentType);
                     if (sectionContentType.MediaType != MediaTypes.Application.Json)
                     {
-                        throw new JsonModelReaderException($"body.form-data[{sectionIndex}]", $"First part must have a Content-Type header value of \"{MediaTypes.Application.Json}\".");
+                        throw new JsonModelReaderException($"First part must have a Content-Type header value of \"{MediaTypes.Application.Json}\".");
                     }
 
                     result = (TResult)CreateInstance<TResult>(await ReadAsJson(section.Body));
@@ -83,8 +84,7 @@ namespace Doctrina.ExperienceApi.Client
                     }
                     else
                     {
-                        //result.ParsingErrors.Add($"body.form-data[{sectionIndex}]", $"No attachment match found for '{hash}'");
-                        throw new JsonModelReaderException($"body.form-data[{sectionIndex}]", $"Header '{ApiHeaders.XExperienceApiHash}: {hash}' does not match any attachments.");
+                        throw new JsonModelReaderException($"Header '{ApiHeaders.XExperienceApiHash}: {hash}' does not match any attachments.");
                     }
                 }
 
@@ -123,9 +123,9 @@ namespace Doctrina.ExperienceApi.Client
                     return new StatementsResult(jsonString);
                 }
             }
-            catch (JsonModelException ex)
+            catch (ExperienceDataException ex)
             {
-                throw new JsonModelReaderException("", ex.Message);
+                throw new JsonModelReaderException($"Error while trying to read json as {type.Name}", ex);
             }
 
             return null;

@@ -1,10 +1,11 @@
 ﻿using System;
+using Doctrina.ExperienceApi.Data.Exceptions;
 
 namespace Doctrina.ExperienceApi.Data.Json
 {
-    public class JsonModelException : Exception
+    public class JsonModelException : ExperienceDataException
     {
-        public JsonModelException()
+        public JsonModelException() : base()
         {
         }
 
@@ -13,7 +14,7 @@ namespace Doctrina.ExperienceApi.Data.Json
         {
         }
 
-        public JsonModelException(string message, Exception innerException) 
+        public JsonModelException(string message, Exception innerException)
             : base(message, innerException)
         {
         }

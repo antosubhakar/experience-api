@@ -19,8 +19,10 @@ namespace Doctrina.ExperienceApi.Data
             }
         }
 
+        /// <exception cref="CultureNameException" />
         public LanguageMap(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
 
+        /// <exception cref="CultureNameException" />
         public LanguageMap(JToken languageMap, ApiVersion version)
         {
             GuardType(languageMap, JTokenType.Object);

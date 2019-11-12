@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.Exceptions
 {
-    public class IriFormatException : Exception
+    public class IriFormatException : ExperienceDataException
     {
         public IriFormatException(string message) : base(message)
         {

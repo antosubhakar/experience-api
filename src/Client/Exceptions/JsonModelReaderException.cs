@@ -4,11 +4,16 @@ namespace Doctrina.ExperienceApi.Client
 {
     public class JsonModelReaderException : Exception
     {
-        public JsonModelReaderException(string key, string message) : base(message)
+        public JsonModelReaderException()
         {
-            Key = key;
         }
 
-        public string Key { get; }
+        public JsonModelReaderException(string message) : base(message)
+        {
+        }
+
+        public JsonModelReaderException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }
