@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace Doctrina.ExperienceApi.Data
@@ -77,6 +78,11 @@ namespace Doctrina.ExperienceApi.Data
 
         public ApiVersion(string version)
         {
+            if (string.IsNullOrWhiteSpace(version))
+            {
+                throw new VersionFormatException("Version is null or empty");
+            }
+
             _version = version;
 
             if (version.StartsWith("1.0.") || version.Equals("1.0"))
@@ -86,7 +92,7 @@ namespace Doctrina.ExperienceApi.Data
 
             else if (!GetKnownVersions().ContainsKey(version))
             {
-                throw new ArgumentException("Unrecognized version: " + version);
+                throw new VersionFormatException("Unrecognized version: " + version);
             }
         }
 

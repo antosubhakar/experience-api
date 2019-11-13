@@ -66,6 +66,13 @@ namespace Doctrina.ExperienceApi.Data
 
             }
 
+            var ver = statement["version"];
+            if (ver != null)
+            {
+                GuardType(ver, JTokenType.String);
+                Version = new ApiVersion(ver.Value<string>());
+            }
+
             GuardAdditionalProperties((JObject)statement, "id", "stored", "authority", "version", "object", "actor", "verb", "result", "context", "timestamp", "attachments");
         }
 
