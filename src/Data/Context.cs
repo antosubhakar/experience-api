@@ -29,10 +29,7 @@ namespace Doctrina.ExperienceApi.Data
             if (instructor != null)
             {
                 GuardType(instructor, JTokenType.Object);
-
-                ObjectType objectType = instructor["objectType"] != null ?
-                    (ObjectType)instructor["objectType"].Value<string>() :
-                    ObjectType.Agent;
+                ObjectType objectType = ParseObjectType(instructor["objectType"], ObjectType.Agent, ObjectType.Group);
 
                 if (objectType != null && objectType == ObjectType.Group)
                 {
@@ -80,6 +77,7 @@ namespace Doctrina.ExperienceApi.Data
             var statement = context["statement"];
             if (statement != null)
             {
+                ParseObjectType(statement["objectType"], ObjectType.StatementRef);
                 Statement = new StatementRef(statement, version);
             }
 

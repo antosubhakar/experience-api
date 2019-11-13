@@ -27,13 +27,21 @@ namespace Doctrina.ExperienceApi.Data
         {
             GuardType(extensions, JTokenType.Null, JTokenType.Object);
 
-            if (extensions.Type == JTokenType.Object)
+            if (extensions is JObject @object)
             {
                 _values = new Dictionary<Uri, JToken>();
 
-                foreach (var token in (JObject)extensions)
+                var properties = @object.Properties();
+                foreach (var token in properties)
                 {
-                    Add(new Uri(token.Key), token.Value);
+                    try
+                    {
+                        Add(new Uri(token.Name), token.Value);
+                    }
+                    catch (UriFormatException ex)
+                    {
+                        throw new JsonTokenModelException(token, ex.Message);
+                    }
                 }
             }
         }

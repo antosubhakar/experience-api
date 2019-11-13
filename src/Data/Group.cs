@@ -21,6 +21,8 @@ namespace Doctrina.ExperienceApi.Data
             
             GuardType(group, JTokenType.Object);
 
+            ParseObjectType(group["objectType"], ObjectType.Group);
+
             var members = group["member"];
             if (members != null)
             {

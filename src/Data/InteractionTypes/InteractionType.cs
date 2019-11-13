@@ -112,7 +112,7 @@ namespace Doctrina.ExperienceApi.Data.InteractionTypes
                 return interactionType;
             }
 
-            throw new InvalidInteractionTypeException(type);
+            throw new InteractionTypeException(type);
         }
 
         public static implicit operator string(InteractionType type)

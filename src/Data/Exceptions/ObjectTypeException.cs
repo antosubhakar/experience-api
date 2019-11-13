@@ -2,9 +2,9 @@
 
 namespace Doctrina.ExperienceApi.Data.Exceptions
 {
-    public class InvalidObjectTypeException : ExperienceDataException
+    public class ObjectTypeException : ExperienceDataException
     {
-        public InvalidObjectTypeException(string type)
+        public ObjectTypeException(string type)
             : base($"'{type}' is not a valid ObjectType.")
         {
         }

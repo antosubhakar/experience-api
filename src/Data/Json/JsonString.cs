@@ -1,5 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Doctrina.ExperienceApi.Data.Json.Exceptions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Doctrina.ExperienceApi.Data.Json
@@ -25,13 +27,20 @@ namespace Doctrina.ExperienceApi.Data.Json
 
         public T Deserialize<T>()
         {
-            using (var stringReader = new StringReader(_jsonString))
+            try
             {
-                using (var jsonTextReader = new JsonTextReader(stringReader))
+                using (var stringReader = new StringReader(_jsonString))
                 {
-                    var jsonSerializer = new ApiJsonSerializer();
-                    return jsonSerializer.Deserialize<T>(jsonTextReader);
+                    using (var jsonTextReader = new JsonTextReader(stringReader))
+                    {
+                        var jsonSerializer = new ApiJsonSerializer();
+                        return jsonSerializer.Deserialize<T>(jsonTextReader);
+                    }
                 }
+            }
+            catch (JsonReaderException ex)
+            {
+                throw new JsonStringException(ex.Message, ex);
             }
         }
 
@@ -45,9 +54,30 @@ namespace Doctrina.ExperienceApi.Data.Json
             return jsonString.ToString();
         }
 
+        public static bool operator ==(JsonString left, JsonString right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(JsonString left, JsonString right)
+        {
+            return !(left == right);
+        }
+
         public override string ToString()
         {
             return _jsonString;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is JsonString @string &&
+                   _jsonString == @string._jsonString;
+        }
+
+        public override int GetHashCode()
+        {
+            return 632056553 + EqualityComparer<string>.Default.GetHashCode(_jsonString);
         }
     }
 }

@@ -51,7 +51,7 @@ namespace Doctrina.ExperienceApi.Data.Json
 
             if (disallowedProps.Count() > 0)
             {
-                throw new JsonTokenModelException(jobj, $"Contains additional JSON properties \"{string.Join(",", disallowedProps)}\", which is not allowed.");
+                throw new JsonTokenModelException(jobj, $"Contains additional JSON properties {string.Join(", ", "\"" + disallowedProps + "\"")}, which is not allowed.");
             }
         }
 
@@ -110,7 +110,7 @@ namespace Doctrina.ExperienceApi.Data.Json
 
                 throw new UnexpectedObjectTypeException(token, objectType);
             }
-            catch (InvalidObjectTypeException ex)
+            catch (ObjectTypeException ex)
             {
                 throw new JsonTokenModelException(token, ex.Message);
             }

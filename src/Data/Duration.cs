@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -31,19 +32,19 @@ namespace Doctrina.ExperienceApi.Data
         {
             if (string.IsNullOrWhiteSpace(s))
             {
-                throw new ArgumentNullException(nameof(s));
+                throw new DurationFormatException(nameof(s));
             }
 
             string strDuration = s.Trim();
 
             if (!strDuration.StartsWith("P"))
             {
-                throw new FormatException("Duration must start with the designator 'P' (for period).");
+                throw new DurationFormatException("Duration must start with the designator 'P' (for period).");
             }
 
             if (strDuration.Length == 1)
             {
-                throw new FormatException("'P' designator is not valid for duration alone.");
+                throw new DurationFormatException("'P' designator is not valid for duration alone.");
             }
 
             Years = null;
@@ -110,7 +111,7 @@ namespace Doctrina.ExperienceApi.Data
                     combined += chr;
                     if (destinct.Contains(combined))
                     {
-                        throw new FormatException($"Duplicate designator '{chr}' at index '{i}'.");
+                        throw new DurationFormatException($"Duplicate designator '{chr}' at index '{i}'.");
                     }
                     destinct.Add(combined);
 
@@ -120,18 +121,18 @@ namespace Doctrina.ExperienceApi.Data
 
                     if (!(validDateDesignator || validTimeDesignator))
                     {
-                        throw new FormatException($"'{chr}' is not a valid period or time designator.");
+                        throw new DurationFormatException($"'{chr}' is not a valid period or time designator.");
                     }
 
                     if (!validDateDesignator && validDateDesignator && periodOrTime != 'T')
                     {
-                        throw new FormatException($"Time designator 'T' must appear before '{chr}'.");
+                        throw new DurationFormatException($"Time designator 'T' must appear before '{chr}'.");
                     }
 
                     // If we have not received any digits for this designator
                     if (string.IsNullOrEmpty(strValue))
                     {
-                        throw new FormatException($"'{chr}' designator must have a value.");
+                        throw new DurationFormatException($"'{chr}' designator must have a value.");
                     }
 
                     if (double.TryParse(strValue, out double value))
@@ -141,7 +142,7 @@ namespace Doctrina.ExperienceApi.Data
                     }
                     else
                     {
-                        throw new FormatException($"'{strValue}' is not valid for designator '{chr}'.");
+                        throw new DurationFormatException($"'{strValue}' is not valid for designator '{chr}'.");
                     }
                 }
             }
@@ -174,7 +175,7 @@ namespace Doctrina.ExperienceApi.Data
                 {
                     if (elements.Count() > 2)
                     {
-                        throw new FormatException($"'W' is the week designator, and cannot be paired with other designators.");
+                        throw new DurationFormatException($"'W' is the week designator, and cannot be paired with other designators.");
                     }
                 }
 
@@ -187,7 +188,7 @@ namespace Doctrina.ExperienceApi.Data
                         if (prevIndexOf > indexOf)
                         {
                             // Previous designator
-                            throw new FormatException($"Date designators must be in the following order 'Y, M, D'.");
+                            throw new DurationFormatException($"Date designators must be in the following order 'Y, M, D'.");
                         }
                         prevIndexOf = indexOf;
                     }
@@ -197,7 +198,7 @@ namespace Doctrina.ExperienceApi.Data
                         if (prevIndexOf > indexOf)
                         {
                             // Previous designator
-                            throw new FormatException($"Time designators must be in the following order 'H, M, S'.");
+                            throw new DurationFormatException($"Time designators must be in the following order 'H, M, S'.");
                         }
                         prevIndexOf = indexOf;
                     }
@@ -232,7 +233,7 @@ namespace Doctrina.ExperienceApi.Data
                     break;
 
                 default:
-                    throw new FormatException($"'{designator}' is not a valid period designator.");
+                    throw new DurationFormatException($"'{designator}' is not a valid period designator.");
             }
         }
 
@@ -274,7 +275,7 @@ namespace Doctrina.ExperienceApi.Data
                     AddSeconds(value);
                     break;
                 default:
-                    throw new FormatException($"'{designator}' is not a valid time designator.");
+                    throw new DurationFormatException($"'{designator}' is not a valid time designator.");
             }
         }
 

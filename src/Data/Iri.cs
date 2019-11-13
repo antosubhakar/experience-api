@@ -23,7 +23,7 @@ namespace Doctrina.ExperienceApi.Data
             {
                 var url = new Uri(iriString);
             }
-            catch (Exception)
+            catch (UriFormatException)
             {
                 throw new IriFormatException($"IRI '{iriString}' is not a well formatted IRI string.");
             }

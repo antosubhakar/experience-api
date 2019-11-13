@@ -7,6 +7,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
         public ActivityValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
+
             RuleFor(x => x.Definition).SetValidator(new ActivityDefinitionValidator())
                 .When(x => x.Definition != null);
 

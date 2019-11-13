@@ -9,6 +9,9 @@ namespace Doctrina.ExperienceApi.Data.Validation
             RuleFor(x => x.Raw).LessThanOrEqualTo(x => x.Max)
                 .Unless(x => x.Raw == null || x.Max == null);
 
+            RuleFor(x => x.Raw).GreaterThanOrEqualTo(x => x.Min)
+                .Unless(x => x.Raw == null || x.Max == null);
+
             RuleFor(x => x.Max).GreaterThan(x => x.Min)
                 .Unless(x => x.Max == null || x.Min == null);
 

@@ -24,7 +24,14 @@ namespace Doctrina.ExperienceApi.Data
             if (moreInfo != null)
             {
                 GuardType(moreInfo, JTokenType.String);
-                MoreInfo = new Uri(moreInfo.Value<string>());
+                try
+                {
+                    MoreInfo = new Uri(moreInfo.Value<string>());
+                }
+                catch (UriFormatException ex)
+                {
+                    throw new JsonTokenModelException(moreInfo, ex);
+                }
             }
 
             var name = obj["name"];

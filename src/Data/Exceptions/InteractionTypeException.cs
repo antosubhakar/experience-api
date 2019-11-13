@@ -2,9 +2,9 @@
 
 namespace Doctrina.ExperienceApi.Data.Exceptions
 {
-    public class InvalidInteractionTypeException : ExperienceDataException
+    public class InteractionTypeException : ExperienceDataException
     {
-        public InvalidInteractionTypeException(string type)
+        public InteractionTypeException(string type)
             : base($"'{type}' is not a valid InteractionType.")
         {
         }

@@ -15,7 +15,6 @@ namespace Doctrina.ExperienceApi.Data
         public Activity(JToken jobj, ApiVersion version) : base(jobj, version)
         {
             GuardType(jobj, JTokenType.Object);
-
             var id = jobj["id"];
             if (id != null)
             {
@@ -26,6 +25,7 @@ namespace Doctrina.ExperienceApi.Data
             var definition = jobj["definition"];
             if (definition != null)
             {
+                GuardType(definition, JTokenType.Object);
                 JToken interactionType = definition["interactionType"];
                 if (interactionType != null)
                 {
@@ -35,13 +35,16 @@ namespace Doctrina.ExperienceApi.Data
                         InteractionType type = interactionType.Value<string>();
                         Definition = type.CreateInstance(definition, version);
                     }
-                    catch (InvalidInteractionTypeException ex)
+                    catch (InteractionTypeException ex)
                     {
                         throw new JsonTokenModelException(interactionType, ex.Message);
                     }
                 }
                 else
                 {
+                    GuardAdditionalProperties((JObject)definition,
+                        "type", "name", "description", "moreInfo", "extensions"
+                    );
                     Definition = new ActivityDefinition(definition, version);
                 }
             }

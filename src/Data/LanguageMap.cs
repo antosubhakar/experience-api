@@ -1,4 +1,5 @@
-﻿using Doctrina.ExperienceApi.Data.Helpers;
+﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Data.Helpers;
 using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections;
@@ -19,10 +20,10 @@ namespace Doctrina.ExperienceApi.Data
             }
         }
 
-        /// <exception cref="CultureNameException" />
+        /// <exception cref="LanguageTagException" />
         public LanguageMap(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
 
-        /// <exception cref="CultureNameException" />
+        /// <exception cref="LanguageTagException" />
         public LanguageMap(JToken languageMap, ApiVersion version)
         {
             GuardType(languageMap, JTokenType.Object);
@@ -33,7 +34,7 @@ namespace Doctrina.ExperienceApi.Data
 
                 if (!CultureHelper.IsValidCultureName(item.Key))
                 {
-                    throw new CultureNameException(languageMap, item.Key);
+                    throw new LanguageTagException(languageMap, item.Key);
                 }
 
                 //if (ContainsKey(item.Key))

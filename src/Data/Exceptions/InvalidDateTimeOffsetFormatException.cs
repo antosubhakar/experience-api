@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Doctrina.ExperienceApi.Data.Json;
+using Newtonsoft.Json.Linq;
 
-namespace Doctrina.ExperienceApi.Data.Json
+namespace Doctrina.ExperienceApi.Data.Exceptions
 {
     public class InvalidDateTimeOffsetFormatException : JsonTokenModelException
     {

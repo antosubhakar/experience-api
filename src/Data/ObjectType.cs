@@ -92,7 +92,7 @@ namespace Doctrina.ExperienceApi.Data
                 return objectType;
             }
 
-            throw new InvalidObjectTypeException(type);
+            throw new ObjectTypeException(type);
         }
 
         public static bool operator ==(ObjectType left, ObjectType right)
