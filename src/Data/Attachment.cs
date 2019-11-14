@@ -59,7 +59,14 @@ namespace Doctrina.ExperienceApi.Data
             if (fileUrl != null)
             {
                 GuardType(fileUrl, JTokenType.String);
-                FileUrl = new Uri(fileUrl.Value<string>());
+                try
+                {
+                    FileUrl = new Uri(fileUrl.Value<string>());
+                }
+                catch (UriFormatException ex)
+                {
+                    throw new JsonTokenModelException(fileUrl, ex);
+                }
             }
         }
 
