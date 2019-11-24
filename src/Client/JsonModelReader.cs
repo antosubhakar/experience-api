@@ -1,8 +1,11 @@
-﻿using Doctrina.ExperienceApi.Client.Http;
+﻿using Doctrina.ExperienceApi.Client.Exceptions;
+using Doctrina.ExperienceApi.Client.Http;
 using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Exceptions;
 using Doctrina.ExperienceApi.Data.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.IO;
 using System.Linq;
@@ -14,13 +17,15 @@ namespace Doctrina.ExperienceApi.Client
 {
     public class JsonModelReader
     {
-        public readonly MediaTypeHeaderValue ContentType;
-        public readonly Stream Stream;
+        public readonly Stream Body;
+        public readonly IHeaderDictionary Headers;
+        public MediaTypeHeaderValue ContentType { get; }
 
-        public JsonModelReader(MediaTypeHeaderValue contentType, Stream stream)
+        public JsonModelReader(IHeaderDictionary headers, Stream bodyStream)
         {
-            ContentType = contentType;
-            Stream = stream;
+            Headers = headers;
+            Body = bodyStream;
+            ContentType = GetContentType();
         }
 
         /// <summary>
@@ -30,53 +35,70 @@ namespace Doctrina.ExperienceApi.Client
         public async Task<TResult> ReadAs<TResult>()
             where TResult : IJsonModel, IAttachmentByHash, new()
         {
-            if (ContentType.MediaType == MediaTypes.Application.Json)
+            if (IsApplicationJson(ContentType.MediaType))
             {
-                return (TResult)CreateInstance<TResult>(await ReadAsJson(Stream));
+                return (TResult)ReadAs<TResult>(await ReadAsJson(Body));
             }
             else if (ContentType.MediaType == MediaTypes.Multipart.Mixed)
             {
                 return await ReadAsMultipart<TResult>();
             }
 
-            throw new JsonModelReaderException($"Unsupported media type: {ContentType.MediaType}");
+            throw new JsonModelReaderException($"Content-Type header must be {MediaTypes.Application.Json} or {MediaTypes.Multipart.Mixed}");
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
         /// <exception cref="JsonModelReaderException"></exception>
-        public async Task<TResult> ReadAsMultipart<TResult>() where TResult : IJsonModel, IAttachmentByHash, new()
+        private async Task<TResult> ReadAsMultipart<TResult>() where TResult : IJsonModel, IAttachmentByHash, new()
         {
             var result = new TResult();
 
-            var boundary = ContentType.Parameters.FirstOrDefault(x => x.Name == "boundary");
-            if (boundary == null || string.IsNullOrWhiteSpace(boundary.Value))
-            {
-                throw new JsonModelReaderException("Content-Type parameter boundary is null or empty.");
-            }
+            string boundary = GetBoundary();
 
-            var multipartReader = new MultipartReader(boundary.Value, Stream);
-            var section = await multipartReader.ReadNextSectionAsync();
+            var multipartReader = new MultipartReader(boundary, Body);
             int sectionIndex = 0;
-            while (section != null)
+            while (true)
             {
+                MultipartSection section = await multipartReader.ReadNextSectionAsync();
+                if (section == null)
+                {
+                    break;
+                }
+                var sectionContentType = ParseContentType(section.ContentType);
+
                 if (sectionIndex == 0)
                 {
-                    var sectionContentType = MediaTypeHeaderValue.Parse(section.ContentType);
-                    if (sectionContentType.MediaType != MediaTypes.Application.Json)
+                    if (!IsApplicationJson(sectionContentType.MediaType))
                     {
                         throw new JsonModelReaderException($"First part must have a Content-Type header value of \"{MediaTypes.Application.Json}\".");
                     }
 
-                    result = (TResult)CreateInstance<TResult>(await ReadAsJson(section.Body));
+                    try
+                    {
+                        result = (TResult)ReadAs<TResult>(await ReadAsJson(section.Body));
+                    }
+                    catch (MultipartSectionException ex)
+                    {
+                        throw new JsonModelReaderException("", ex);
+                    }
                 }
                 else
                 {
-                    var attachmentSection = new MultipartAttachmentSection(section);
+                    MultipartAttachmentSection attachmentSection;
+                    try
+                    {
+                        attachmentSection = new MultipartAttachmentSection(section);
+                    }
+                    catch (MultipartSectionException ex)
+                    {
+                        throw new JsonModelReaderException($"Invalid Multipart attachment section.", ex);
+                    }
                     string hash = attachmentSection.XExperienceApiHash;
+
                     var attachment = result.GetAttachmentByHash(hash);
                     if (attachment != null)
                     {
@@ -87,15 +109,13 @@ namespace Doctrina.ExperienceApi.Client
                         throw new JsonModelReaderException($"Header '{ApiHeaders.XExperienceApiHash}: {hash}' does not match any attachments.");
                     }
                 }
-
-                section = await multipartReader.ReadNextSectionAsync();
                 sectionIndex++;
             }
 
             return result;
         }
 
-        public async Task<JsonString> ReadAsJson(Stream jsonStream)
+        private async Task<JsonString> ReadAsJson(Stream jsonStream)
         {
             using (StreamReader streamReader = new StreamReader(jsonStream, Encoding.UTF8))
             {
@@ -103,10 +123,10 @@ namespace Doctrina.ExperienceApi.Client
             }
         }
 
-        private object CreateInstance<TResult>(JsonString jsonString)
+        private IJsonModel ReadAs<TResult>(JsonString jsonString)
             where TResult : IJsonModel, IAttachmentByHash, new()
         {
-            var type = typeof(TResult);
+            Type type = typeof(TResult);
 
             try
             {
@@ -129,6 +149,45 @@ namespace Doctrina.ExperienceApi.Client
             }
 
             return null;
+        }
+
+        private MediaTypeHeaderValue GetContentType()
+        {
+            if (Headers.TryGetValue("Content-Type", out StringValues values))
+            {
+                return ParseContentType(values);
+            }
+
+            throw new JsonModelReaderException("Content-Type header was not found");
+        }
+
+        private static MediaTypeHeaderValue ParseContentType(string headerValue)
+        {
+            try
+            {
+                return MediaTypeHeaderValue.Parse(headerValue.ToString());
+            }
+            catch (FormatException ex)
+            {
+                throw new JsonModelReaderException(ex.Message, ex);
+            }
+        }
+
+        private static bool IsApplicationJson(string contentType)
+        {
+            var parsedValue = ParseContentType(contentType);
+            return parsedValue.MediaType == MediaTypes.Application.Json;
+        }
+
+        private string GetBoundary()
+        {
+            var boundary = ContentType.Parameters.FirstOrDefault(x => x.Name == "boundary");
+            if (boundary == null || string.IsNullOrWhiteSpace(boundary.Value))
+            {
+                throw new JsonModelReaderException("Content-Type parameter boundary is null or empty.");
+            }
+
+            return boundary.Value;
         }
     }
 }

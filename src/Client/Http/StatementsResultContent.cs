@@ -1,4 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Exceptions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
@@ -165,30 +166,37 @@ namespace Doctrina.ExperienceApi.Client.Http
         protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
         {
             string jsonString = JsonConvert.SerializeObject(StatementsResultObject);
-            var jsonContent = new StringContent(jsonString, Encoding.UTF8, MediaTypes.Application.Json);
-
-            if (Headers.ContentType.MediaType == MediaTypes.Multipart.Mixed)
+            using (var jsonContent = new StringContent(jsonString, Encoding.UTF8, MediaTypes.Application.Json))
             {
-                //string boundary = GetBoundary(Headers.ContentType);
-                var multipart = new MultipartContent
+                if (Headers.ContentType.MediaType == MediaTypes.Multipart.Mixed)
                 {
-                    // First part must be application/json
-                    jsonContent
-                };
+                    //string boundary = GetBoundary(Headers.ContentType);
+                    var multipart = new MultipartContent
+                    {
+                        // First part must be application/json
+                        jsonContent
+                    };
 
-                var attachments = StatementsResultObject.Statements.SelectMany(x => x.Attachments);
+                    if (StatementsResultObject != null)
+                    {
+                        if (StatementsResultObject.Statements != null)
+                        {
+                            var attachments = StatementsResultObject.Statements.SelectMany(x => x.Attachments);
 
-                // Add attachments
-                foreach (var attachment in attachments)
-                {
-                    multipart.Add(new AttachmentContent(attachment));
+                            // Add attachments
+                            foreach (var attachment in attachments)
+                            {
+                                multipart.Add(new AttachmentContent(attachment));
+                            }
+                        }
+                    }
+
+                    await multipart.CopyToAsync(stream, context);
                 }
-
-                await multipart.CopyToAsync(stream, context);
-            }
-            else
-            {
-                await jsonContent.CopyToAsync(stream, context);
+                else
+                {
+                    await jsonContent.CopyToAsync(stream, context);
+                }
             }
         }
 

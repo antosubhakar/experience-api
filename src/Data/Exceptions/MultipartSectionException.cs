@@ -1,7 +1,6 @@
-﻿using Doctrina.ExperienceApi.Data.Exceptions;
-using System;
+﻿using System;
 
-namespace Doctrina.ExperienceApi.Data.Consumer.Exceptions
+namespace Doctrina.ExperienceApi.Data.Exceptions
 {
     public class MultipartSectionException : ExperienceDataException
     {

@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Doctrina.ExperienceApi.Client
+namespace Doctrina.ExperienceApi.Client.Exceptions
 {
     public class JsonModelReaderException : Exception
     {
-        public JsonModelReaderException()
-        {
-        }
-
         public JsonModelReaderException(string message) : base(message)
         {
         }

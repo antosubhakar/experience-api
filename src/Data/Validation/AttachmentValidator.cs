@@ -12,6 +12,10 @@ namespace Doctrina.ExperienceApi.Data.Validation
             RuleFor(x => x.ContentType).NotEmpty();
             RuleFor(x => x.Length).NotEmpty();
             RuleFor(x => x.SHA2).NotEmpty();
+            RuleFor(x => x.Payload)
+                .NotEmpty()
+                .When(x => x.FileUrl == null)
+                .WithMessage(p => $"Attachment payload cannot be empty, when fileUrl is also empty.");
 
             // TODO: Create validation rules for the validation of Signatures
             //if (UsageType == new Iri("http://adlnet.gov/expapi/attachments/signature")

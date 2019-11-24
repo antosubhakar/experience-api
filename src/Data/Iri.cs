@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.Serialization;
 
 namespace Doctrina.ExperienceApi.Data
 {
@@ -11,13 +12,20 @@ namespace Doctrina.ExperienceApi.Data
     /// Internationalized Resource Identifiers, or IRIs, are unique identifiers which could also be resolvable. 
     /// IRIs can contain some characters outside of the ASCII character set.
     /// </summary>
-    public class Iri
+    [Serializable]
+    [TypeConverter(typeof(IriTypeConverter))]
+    public class Iri : ISerializable
     {
-        private readonly string _iriString;
+        private string _iriString;
 
         public Iri() { }
 
         public Iri(string iriString)
+        {
+            CreateThis(iriString);
+        }
+
+        private void CreateThis(string iriString)
         {
             try
             {
@@ -81,6 +89,18 @@ namespace Doctrina.ExperienceApi.Data
             return 314876093 + EqualityComparer<string>.Default.GetHashCode(_iriString);
         }
 
+        protected Iri(SerializationInfo serializationInfo, StreamingContext streamingContext)
+        {
+            string iriString = serializationInfo.GetString("SourceIri");
+
+            CreateThis(iriString);
+        }
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("SourceIri", _iriString);
+        }
+
         public static bool operator ==(Iri iri1, Iri iri2)
         {
             return EqualityComparer<Iri>.Default.Equals(iri1, iri2);
@@ -117,7 +137,7 @@ namespace Doctrina.ExperienceApi.Data
         }
     }
 
-    public class IRITypeConverter : TypeConverter
+    public class IriTypeConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
@@ -142,14 +162,14 @@ namespace Doctrina.ExperienceApi.Data
             return base.ConvertFrom(context, culture, value);
         }
 
-        //public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        //{
-        //    if(destinationType == typeof(IRI))
-        //    {
-        //        return 
-        //    }
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
+        {
+            if (destinationType == typeof(string))
+            {
+                return true;
+            }
 
-        //    return base.CanConvertTo(context, destinationType);
-        //}
+            return base.CanConvertTo(context, destinationType);
+        }
     }
 }

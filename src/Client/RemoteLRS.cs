@@ -113,12 +113,6 @@ namespace Doctrina.ExperienceApi.Client
         /// <returns></returns>
         public async Task<StatementsResult> QueryStatements(StatementsQuery query, CancellationToken cancellationToken = default)
         {
-            if (query.StatementId.HasValue
-                || query.VoidedStatementId.HasValue)
-            {
-                throw new ArgumentException("Use GetStatement or GetVoidedStatement methods indstead.");
-            }
-
             var parameters = query.ToParameterMap(Version);
 
             var uriBuilder = new UriBuilder(HttpClient.BaseAddress);
