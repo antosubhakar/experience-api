@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class FillIn : InteractionTypeBase
+    public class FillIn : InteractionActivityDefinitionBase
     {
         protected override InteractionType INTERACTION_TYPE => InteractionType.FillIn;
 

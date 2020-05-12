@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class Matching : InteractionTypeBase
+    public class Matching : InteractionActivityDefinitionBase
     {
         protected override InteractionType INTERACTION_TYPE => InteractionType.Matching;
 

@@ -217,7 +217,7 @@ namespace Doctrina.ExperienceApi.Data
                 return computeHash(Guid.NewGuid().ToString());
             }
 
-            throw new InvalidOperationException("Cannot compute hash for agent without identifier.");
+            throw new InvalidOperationException("Cannot compute hash for an Agent without identifier.");
         }
 
         public override bool Equals(object obj)

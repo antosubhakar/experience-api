@@ -43,7 +43,7 @@ namespace Doctrina.ExperienceApi.Data.Json
             return base.GetHashCode();
         }
 
-        public void GuardAdditionalProperties(JObject jobj, params string[] allowedPropertyNames)
+        internal void GuardAdditionalProperties(JObject jobj, params string[] allowedPropertyNames)
         {
             var disallowedProps = jobj.Properties()
                 .Where(x => x.Name != null && !allowedPropertyNames.Contains(x.Name))
@@ -55,7 +55,7 @@ namespace Doctrina.ExperienceApi.Data.Json
             }
         }
 
-        public DateTimeOffset ParseDateTimeOffset(JToken token)
+        internal DateTimeOffset ParseDateTimeOffset(JToken token)
         {
             GuardType(token, JTokenType.String);
 
@@ -78,7 +78,7 @@ namespace Doctrina.ExperienceApi.Data.Json
             }
         }
 
-        public Guid ParseGuid(JToken token)
+        internal Guid ParseGuid(JToken token)
         {
             GuardType(token, JTokenType.String);
 
@@ -94,7 +94,7 @@ namespace Doctrina.ExperienceApi.Data.Json
             }
         }
 
-        public ObjectType ParseObjectType(JToken token, params ObjectType[] types)
+        internal ObjectType ParseObjectType(JToken token, params ObjectType[] types)
         {
             GuardType(token, JTokenType.String);
             try
@@ -121,7 +121,7 @@ namespace Doctrina.ExperienceApi.Data.Json
         /// </summary>
         /// <param name="token"></param>
         /// <param name="types"></param>
-        public void GuardType(JToken token, params JTokenType[] types)
+        internal void GuardType(JToken token, params JTokenType[] types)
         {
             if (token == null || !types.Contains(token.Type))
             {

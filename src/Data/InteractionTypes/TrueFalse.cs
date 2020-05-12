@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class TrueFalse : InteractionTypeBase
+    public class TrueFalse : InteractionActivityDefinitionBase
     {
         public TrueFalse()
         {

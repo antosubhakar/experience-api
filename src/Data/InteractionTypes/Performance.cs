@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class Performance : InteractionTypeBase
+    public class Performance : InteractionActivityDefinitionBase
     {
         protected override InteractionType INTERACTION_TYPE => InteractionType.Performance;
 

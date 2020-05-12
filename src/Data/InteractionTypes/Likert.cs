@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class Likert : InteractionTypeBase
+    public class Likert : InteractionActivityDefinitionBase
     {
         protected override InteractionType INTERACTION_TYPE => InteractionType.Likert;
 

@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class Choice : InteractionTypeBase
+    public class Choice : InteractionActivityDefinitionBase
     {
         protected override InteractionType INTERACTION_TYPE => InteractionType.Choice;
         public Choice() { }

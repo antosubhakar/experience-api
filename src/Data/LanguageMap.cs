@@ -4,6 +4,7 @@ using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace Doctrina.ExperienceApi.Data
 {
@@ -51,7 +52,19 @@ namespace Doctrina.ExperienceApi.Data
             var obj = new JObject();
             foreach (var pair in this)
             {
-                obj[pair.Key] = pair.Value;
+                if(format == ResultFormat.Canonical)
+                {
+                    if(pair.Key == CultureInfo.CurrentCulture.Name)
+                    {
+                        obj[pair.Key] = pair.Value;
+                        break;
+                    }
+                    continue;
+                }
+                else
+                {
+                    obj[pair.Key] = pair.Value;
+                }
             }
             return obj;
         }

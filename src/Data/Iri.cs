@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace Doctrina.ExperienceApi.Data
 {
     /// <summary>
-    /// Internationalized Resource Identifiers, or IRIs, are unique identifiers which could also be resolvable. 
+    /// Internationalized Resource Identifiers, or IRIs, are unique identifiers which could also be resolvable.
     /// IRIs can contain some characters outside of the ASCII character set.
     /// </summary>
     [Serializable]

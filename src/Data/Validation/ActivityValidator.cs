@@ -11,7 +11,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
             RuleFor(x => x.Definition).SetValidator(new ActivityDefinitionValidator())
                 .When(x => x.Definition != null);
 
-            RuleFor(x => x.Definition as InteractionTypes.InteractionTypeBase).NotEmpty()
+            RuleFor(x => x.Definition as InteractionTypes.InteractionActivityDefinitionBase).NotEmpty()
                 .DependentRules(() =>
                 {
                     RuleFor(x => x.Definition as InteractionTypes.Choice).NotEmpty()
@@ -44,7 +44,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
                     RuleFor(x => x.Definition as InteractionTypes.TrueFalse).NotEmpty()
                         .When(x => x.Definition is InteractionTypes.TrueFalse);
                 })
-                .When(x => x.Definition is InteractionTypes.InteractionTypeBase);
+                .When(x => x.Definition is InteractionTypes.InteractionActivityDefinitionBase);
         }
     }
 }

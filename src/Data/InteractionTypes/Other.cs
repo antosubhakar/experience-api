@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class Other : InteractionTypeBase
+    public class Other : InteractionActivityDefinitionBase
     {
         public Other()
         {

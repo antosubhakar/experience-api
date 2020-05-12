@@ -14,9 +14,9 @@ namespace Doctrina.ExperienceApi.Data
         private readonly ICollection<Statement> Statements = new HashSet<Statement>();
 
         public StatementCollection() { }
-        public StatementCollection(ICollection<Statement> statements)
+        public StatementCollection(IEnumerable<Statement> statements)
         {
-            Statements = statements;
+            Statements = new HashSet<Statement>(statements);
         }
         public StatementCollection(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
         public StatementCollection(JToken jobj, ApiVersion version)

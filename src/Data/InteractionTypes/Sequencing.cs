@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class Sequencing : InteractionTypeBase
+    public class Sequencing : InteractionActivityDefinitionBase
     {
         public Sequencing() { }
 

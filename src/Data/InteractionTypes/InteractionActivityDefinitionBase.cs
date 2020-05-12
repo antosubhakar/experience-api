@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public abstract class InteractionTypeBase : ActivityDefinition
+    public abstract class InteractionActivityDefinitionBase : ActivityDefinition
     {
-        public InteractionTypeBase() { }
+        protected InteractionActivityDefinitionBase() { }
 
-        public InteractionTypeBase(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
+        protected InteractionActivityDefinitionBase(JsonString jsonString) : this(jsonString.ToJToken(), ApiVersion.GetLatest()) { }
 
-        public InteractionTypeBase(JToken interactionType, ApiVersion version) : base(interactionType, version)
+        protected InteractionActivityDefinitionBase(JToken interactionType, ApiVersion version) : base(interactionType, version)
         {
             var correctResponsesPattern = interactionType["correctResponsesPattern"];
             if (correctResponsesPattern != null)

@@ -10,7 +10,7 @@ namespace Doctrina.ExperienceApi.Data
         [EnumMember(Value = "exact")]
         Exact = 1,
 
-        [EnumMember(Value = "cannonical")]
-        Cannonical = 2
+        [EnumMember(Value = "canonical")]
+        Canonical = 2
     }
 }

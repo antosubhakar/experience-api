@@ -1,4 +1,8 @@
 ﻿using FluentValidation;
+using Microsoft.Azure.KeyVault.Cryptography.Algorithms;
+using Newtonsoft.Json.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Doctrina.ExperienceApi.Data.Validation
 {
@@ -17,20 +21,9 @@ namespace Doctrina.ExperienceApi.Data.Validation
                 .When(x => x.FileUrl == null)
                 .WithMessage(p => $"Attachment payload cannot be empty, when fileUrl is also empty.");
 
-            // TODO: Create validation rules for the validation of Signatures
-            //if (UsageType == new Iri("http://adlnet.gov/expapi/attachments/signature")
-            //    && ContentType == "application/octet-stream")
-            //{
-            //    // Verify signatures are well formed
-
-            //    // Decode the JWS signature, and load the signed serialization of the Statement from the JWS signature payload.
-
-            //    // Validate that the original Statement is logically equivalent to the received Statement.
-
-            //    // If the JWS header includes an X.509 certificate, validate the signature against that certificate as defined in JWS.
-
-            //    // Validate that the signature requirements outlined above have been met.
-            //}
+            // Signed Statement rules
+            RuleFor(x => x.ContentType).Equal("application/octet-stream")
+                .When(x => x.UsageType == new Iri("http://adlnet.gov/expapi/attachments/signature"));
         }
     }
 }

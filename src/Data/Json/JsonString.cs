@@ -79,5 +79,18 @@ namespace Doctrina.ExperienceApi.Data.Json
         {
             return 632056553 + EqualityComparer<string>.Default.GetHashCode(_jsonString);
         }
+
+        public bool IsValid()
+        {
+            try
+            {
+                this.ToJToken();
+                return true;
+            }
+            catch (JsonStringException)
+            {
+                return false;
+            }
+        }
     }
 }

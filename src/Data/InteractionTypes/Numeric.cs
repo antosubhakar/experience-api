@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.InteractionTypes
 {
-    public class Numeric : InteractionTypeBase
+    public class Numeric : InteractionActivityDefinitionBase
     {
         public Numeric() { }
 

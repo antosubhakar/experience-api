@@ -49,9 +49,9 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
             var request = mockHttp.Expect(HttpMethod.Get, $"{BaseAddress}/statements")
                 .WithQueryString(new Dictionary<string, string>() {
                     { "statementId", statement.Id.Value.ToString() },
-                    { "format", ResultFormat.Cannonical.ToString() }
+                    { "format", ResultFormat.Canonical.ToString() }
                 })
-                .Respond("application/json", statement.ToJson(ResultFormat.Cannonical));
+                .Respond("application/json", statement.ToJson(ResultFormat.Canonical));
 
             var httpClient = mockHttp.ToHttpClient();
             httpClient.BaseAddress = BaseAddress;
@@ -60,7 +60,7 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
 
             var result = await client.GetStatement(
                 statement.Id.Value,
-                format: ResultFormat.Cannonical
+                format: ResultFormat.Canonical
             );
 
             result.Id.Value.ShouldBe(statement.Id.Value);

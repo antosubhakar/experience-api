@@ -3,6 +3,7 @@ using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Text;
 
 namespace Doctrina.ExperienceApi.Data
 {
@@ -109,11 +110,19 @@ namespace Doctrina.ExperienceApi.Data
         public Uri FileUrl { get; set; }
 
         /// <summary>
-        /// The byte array of Attachment data. 
+        /// The byte array of Attachment data. (Use SetPayload method)
         /// </summary>
         [JsonIgnore]
-        public byte[] Payload { get; set; }
+        public byte[] Payload { get; private set; }
 
+        /// <summary>
+        /// Sets the Attachment data payload.
+        /// </summary>
+        /// <param name="s">The string representing the payload.</param>
+        public void SetPayload(string s)
+        {
+            SetPayload(Encoding.UTF8.GetBytes(s));
+        }
 
         /// <summary>
         /// Sets the Attachment data payload.

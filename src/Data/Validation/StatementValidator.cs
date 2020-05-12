@@ -1,4 +1,10 @@
-﻿using FluentValidation;
+﻿using Doctrina.ExperienceApi.Data.Security.Cryptography;
+using FluentValidation;
+using System;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json.Linq;
+using Doctrina.ExperienceApi.Data.Json;
 
 namespace Doctrina.ExperienceApi.Data.Validation
 {
@@ -29,6 +35,48 @@ namespace Doctrina.ExperienceApi.Data.Validation
                 .Equal(ObjectType.StatementRef)
                 .When(x => x.Verb?.Id?.ToString() == Verbs.Voided)
                 .WithMessage("When statement verb is voided, statement object must be StatementRef.");
+
+            RuleFor(x => x).Custom((statement, context) =>
+            {
+                var attachments = statement.Attachments;
+                for(int i = 0; i < attachments.Count; i++)
+                {
+                    var attachment = attachments.ElementAt(i);
+                    if(attachment.UsageType == new Iri("http://adlnet.gov/expapi/attachments/signature"))
+                    {
+                        if (attachment.ContentType != "application/octet-stream")
+                        {
+                            context.AddFailure($"Attachments[{i}].ContentType", "Must be \"application/octet-stream\"");
+                            continue;
+                        }
+
+                        var jws = JsonWebSignature.Parse(Encoding.UTF8.GetString(attachment.Payload));
+                        if (jws.Errors.Count() > 0)
+                        {
+                            string key = $"Attachment[{i}].Payload";
+                            // context.AddFailure(key, "Invalid JWS Signature.");
+                            foreach(var error in jws.Errors)
+                            {
+                                context.AddFailure(key, error.Message);
+                            }
+                            continue;
+                        }
+
+                        var jsonString = new JsonString(jws.Payload);
+                        if(!jsonString.IsValid())
+                        {
+                            context.AddFailure($"Attachments[{i}].Pyload", "JWS Payload is not valid json format.");
+                            continue;
+                        }
+
+                        var payloadStatement = new Statement(jsonString);
+                        if (!payloadStatement.Equals(statement))
+                        {
+                            context.AddFailure($"Attachments[{i}].Pyload", "JWS Payload does not match the signed statement.");
+                        }
+                    }
+                }
+            });
         }
     }
 }

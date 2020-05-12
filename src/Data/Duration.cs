@@ -11,6 +11,7 @@ namespace Doctrina.ExperienceApi.Data
     /// <summary>
     /// ISO 8601 Duration
     /// </summary>
+    [TypeConverter(typeof(DurationTypeConverter))]
     public struct Duration
     {
         //private static string _regexPattern = @"^P((\d+(?:\.\d+)?Y)?(\d+(?:\.\d+)?M)?(\d+(?:\.\d+)?D)?(T(?=\d)(\d+(?:\.\d+)?H)?(\d+(?:\.\d+)?M)?(\d+(?:\.\d+)?S)?)?)$|^P(\d+(?:\.\d+)?W)?$";
