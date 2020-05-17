@@ -1,6 +1,7 @@
 ﻿using Doctrina.ExperienceApi.Data.Json.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,7 +9,7 @@ namespace Doctrina.ExperienceApi.Data.Json
 {
     public struct JsonString
     {
-        private readonly string _jsonString;
+        private string _jsonString;
 
         public JsonString(string jsonString)
         {
@@ -78,6 +79,18 @@ namespace Doctrina.ExperienceApi.Data.Json
         public override int GetHashCode()
         {
             return 632056553 + EqualityComparer<string>.Default.GetHashCode(_jsonString);
+        }
+
+        public void Merge(JsonString json)
+        {
+            var container = this.Deserialize<JContainer>();
+            container.Merge(json.Deserialize<JContainer>(), new JsonMergeSettings
+            {
+                // union array values together to avoid duplicates
+                MergeArrayHandling = MergeArrayHandling.Union
+            });
+
+            _jsonString = container.ToString();
         }
 
         public bool IsValid()
