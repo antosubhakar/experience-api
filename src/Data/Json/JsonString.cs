@@ -97,7 +97,7 @@ namespace Doctrina.ExperienceApi.Data.Json
         {
             try
             {
-                this.ToJToken();
+                this.Deserialize<JContainer>();
                 return true;
             }
             catch (JsonStringException)
