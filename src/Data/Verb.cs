@@ -34,7 +34,7 @@ namespace Doctrina.ExperienceApi.Data
 
         /// <summary>
         /// Corresponds to a Verb definition. (Required)
-        /// Each Verb definition corresponds to the meaning of a Verb, not the word. 
+        /// Each Verb definition corresponds to the meaning of a Verb, not the word.
         /// </summary>
         public Iri Id { get; set; }
 
@@ -59,7 +59,7 @@ namespace Doctrina.ExperienceApi.Data
                 ["id"] = Id.ToString(),
             };
 
-            if (Display != null)
+            if (Display != null && format != ResultFormat.Ids)
             {
                 jobj["display"] = Display.ToJToken(version, format);
             }

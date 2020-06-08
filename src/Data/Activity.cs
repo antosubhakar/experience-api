@@ -53,12 +53,12 @@ namespace Doctrina.ExperienceApi.Data
         protected override ObjectType OBJECT_TYPE => ObjectType.Activity;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public Iri Id { get; set; }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public ActivityDefinition Definition { get; set; }
 
@@ -71,7 +71,7 @@ namespace Doctrina.ExperienceApi.Data
                 result["id"] = Id.ToString();
             }
 
-            if (Definition != null)
+            if (Definition != null && format != ResultFormat.Ids)
             {
                 result["definition"] = Definition.ToJToken(version, format);
             }

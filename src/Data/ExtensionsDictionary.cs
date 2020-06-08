@@ -8,13 +8,14 @@ namespace Doctrina.ExperienceApi.Data
 {
     public class ExtensionsDictionary : JsonModel, IDictionary<Uri, JToken>
     {
-        private readonly IDictionary<Uri, JToken> _values;
+        private readonly IDictionary<Uri, JToken> _values = new Dictionary<Uri, JToken>();
 
-        public ExtensionsDictionary() { }
+        public ExtensionsDictionary()
+        {
+        }
+
         public ExtensionsDictionary(IEnumerable<KeyValuePair<Uri, JToken>> values)
         {
-            _values = new Dictionary<Uri, JToken>();
-
             foreach (var value in values)
             {
                 _values.Add(value);
@@ -29,8 +30,6 @@ namespace Doctrina.ExperienceApi.Data
 
             if (extensions is JObject @object)
             {
-                _values = new Dictionary<Uri, JToken>();
-
                 var properties = @object.Properties();
                 foreach (var token in properties)
                 {
@@ -98,7 +97,7 @@ namespace Doctrina.ExperienceApi.Data
 
         public override JToken ToJToken(ApiVersion version, ResultFormat format)
         {
-            if (_values != null && _values.Count > 0)
+            if (_values.Count > 0)
             {
                 var obj = new JObject();
                 foreach (var val in _values)

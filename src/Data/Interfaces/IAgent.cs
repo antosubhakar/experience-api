@@ -8,6 +8,5 @@
         string Mbox_SHA1SUM { get; set; }
         string Name { get; set; }
         Iri OpenId { get; set; }
-        string ComputeHash();
     }
 }

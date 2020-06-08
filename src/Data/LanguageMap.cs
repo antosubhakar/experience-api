@@ -10,7 +10,7 @@ namespace Doctrina.ExperienceApi.Data
 {
     public class LanguageMap : JsonModel, IDictionary<string, string>
     {
-        public IDictionary<string, string> _values = new Dictionary<string, string>();
+        private IDictionary<string, string> _values = new Dictionary<string, string>();
 
         public LanguageMap() { }
         public LanguageMap(IEnumerable<KeyValuePair<string, string>> values)

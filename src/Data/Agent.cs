@@ -112,7 +112,7 @@ namespace Doctrina.ExperienceApi.Data
         {
             var jobj = base.ToJToken(version, format);
 
-            if (Name != null)
+            if (Name != null && format != ResultFormat.Ids)
             {
                 jobj["name"] = Name;
             }
@@ -146,78 +146,6 @@ namespace Doctrina.ExperienceApi.Data
                 && string.IsNullOrEmpty(Mbox_SHA1SUM)
                 && Account == null
                 && OpenId == null);
-        }
-
-        public bool IsIdentified()
-        {
-            return !IsAnonymous();
-        }
-
-        public List<string> GetIdentifiersByName()
-        {
-            var ids = new List<string>();
-            if (Mbox != null)
-            {
-                ids.Add(nameof(Mbox).ToLower());
-            }
-
-            if (!string.IsNullOrEmpty(Mbox_SHA1SUM))
-            {
-                ids.Add(nameof(Mbox_SHA1SUM));
-            }
-
-            if (Account != null)
-            {
-                ids.Add(nameof(Account));
-            }
-
-            if (OpenId != null)
-            {
-                ids.Add(nameof(OpenId));
-            }
-
-            return ids;
-        }
-
-        /// <summary>
-        /// Compute IFI hash
-        /// </summary>
-        public string ComputeHash()
-        {
-            Func<string, string> computeHash = SHAHelper.SHA1.ComputeHash;
-
-            if (Mbox != null)
-            {
-                return computeHash(Mbox.ToString());
-            }
-
-            if (!string.IsNullOrWhiteSpace(Mbox_SHA1SUM))
-            {
-                // We need to re-compute for mbox and mbox_sha1sum not being equal.
-                return computeHash(Mbox_SHA1SUM);
-            }
-
-            if (OpenId != null)
-            {
-                return OpenId.ComputeHash();
-            }
-
-            if (Account != null)
-            {
-                var uriBuilder = new UriBuilder(Account.HomePage)
-                {
-                    UserName = Account.Name
-                };
-                return computeHash(uriBuilder.ToString());
-            }
-
-            if (ObjectType == ObjectType.Group)
-            {
-                // Is anonymous group, generate unique id
-                return computeHash(Guid.NewGuid().ToString());
-            }
-
-            throw new InvalidOperationException("Cannot compute hash for an Agent without identifier.");
         }
 
         public override bool Equals(object obj)
