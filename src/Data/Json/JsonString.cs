@@ -43,6 +43,10 @@ namespace Doctrina.ExperienceApi.Data.Json
             {
                 throw new JsonStringException(ex.Message, ex);
             }
+            catch(JsonWriterException ex)
+            {
+                throw new JsonStringException(ex.Message, ex);
+            }
         }
 
         public static implicit operator JsonString(string jsonString)
