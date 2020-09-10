@@ -76,7 +76,7 @@ namespace Doctrina.ExperienceApi.Data
             GuardAdditionalProperties((JObject)statement, "id", "stored", "authority", "version", "object", "actor", "verb", "result", "context", "timestamp", "attachments");
         }
 
-
+        
 
         /// <summary>
         /// UUID assigned by LRS if not set by the Learning Record Provider.

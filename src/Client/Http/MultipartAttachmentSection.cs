@@ -1,12 +1,8 @@
 ﻿using Doctrina.ExperienceApi.Data.Exceptions;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Buffers;
 using System.IO;
-using System.IO.Pipelines;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Doctrina.ExperienceApi.Client.Http
@@ -61,7 +57,7 @@ namespace Doctrina.ExperienceApi.Client.Http
 
         public async Task<byte[]> ReadAsByteArrayAsync()
         {
-            using(StreamReader sr = new StreamReader(section.Body))
+            using (StreamReader sr = new StreamReader(section.Body))
             {
                 return Encoding.UTF8.GetBytes(await sr.ReadToEndAsync());
             }

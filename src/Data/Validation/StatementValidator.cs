@@ -1,10 +1,8 @@
-﻿using Doctrina.ExperienceApi.Data.Security.Cryptography;
+﻿using Doctrina.ExperienceApi.Data.Json;
+using Doctrina.ExperienceApi.Data.Security.Cryptography;
 using FluentValidation;
-using System;
 using System.Linq;
 using System.Text;
-using Newtonsoft.Json.Linq;
-using Doctrina.ExperienceApi.Data.Json;
 
 namespace Doctrina.ExperienceApi.Data.Validation
 {
@@ -39,10 +37,10 @@ namespace Doctrina.ExperienceApi.Data.Validation
             RuleFor(x => x).Custom((statement, context) =>
             {
                 var attachments = statement.Attachments;
-                for(int i = 0; i < attachments.Count; i++)
+                for (int i = 0; i < attachments.Count; i++)
                 {
                     var attachment = attachments.ElementAt(i);
-                    if(attachment.UsageType == new Iri("http://adlnet.gov/expapi/attachments/signature"))
+                    if (attachment.UsageType == new Iri("http://adlnet.gov/expapi/attachments/signature"))
                     {
                         if (attachment.ContentType != "application/octet-stream")
                         {
@@ -55,7 +53,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
                         {
                             string key = $"Attachment[{i}].Payload";
                             // context.AddFailure(key, "Invalid JWS Signature.");
-                            foreach(var error in jws.Errors)
+                            foreach (var error in jws.Errors)
                             {
                                 context.AddFailure(key, error.Message);
                             }
@@ -63,7 +61,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
                         }
 
                         var jsonString = new JsonString(jws.Payload);
-                        if(!jsonString.IsValid())
+                        if (!jsonString.IsValid())
                         {
                             context.AddFailure($"Attachments[{i}].Pyload", "JWS Payload is not valid json format.");
                             continue;

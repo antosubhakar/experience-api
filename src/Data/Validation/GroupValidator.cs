@@ -12,7 +12,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
 
             // Requirements for Anonymous Groups
             RuleFor(x => x.Member)
-                .Cascade(CascadeMode.StopOnFirstFailure)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .Must(x => x.Count() > 0)
                 .Unless(IsIdentifiedGroup)

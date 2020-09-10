@@ -1,12 +1,9 @@
 ﻿using Doctrina.ExperienceApi.Data.Exceptions;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Doctrina.ExperienceApi.Data.Security.Cryptography
 {
@@ -37,7 +34,7 @@ namespace Doctrina.ExperienceApi.Data.Security.Cryptography
                 jws.Payload = ParsePayload(parts[1]);
                 jws.Signature = Encoding.ASCII.GetString(ParseSignature(parts[2]));
             }
-            catch(FormatException ex)
+            catch (FormatException ex)
             {
                 jws.Errors.Add(new JsonWebSignatureException("Invalid format", ex));
             }
@@ -119,13 +116,16 @@ namespace Doctrina.ExperienceApi.Data.Security.Cryptography
         {
             switch (algValue)
             {
-                case "RS256": RS256VerifySignature(parts); break;
+                case "RS256":
+                    RS256VerifySignature(parts);
+                    break;
                 //case "RS384": return RS384(payload, signature);
                 //case "RS512": return RS512(payload, signature);
-                default: {
-                    Errors.Add(new JsonWebSignatureException($"Invalid ALG value: '{algValue}'"));
-                    break;
-                }
+                default:
+                    {
+                        Errors.Add(new JsonWebSignatureException($"Invalid ALG value: '{algValue}'"));
+                        break;
+                    }
             }
         }
 

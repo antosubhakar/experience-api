@@ -1,5 +1,5 @@
-﻿using System;
-using Doctrina.ExperienceApi.Data.Exceptions;
+﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using System;
 
 namespace Doctrina.ExperienceApi.Data.Json
 {

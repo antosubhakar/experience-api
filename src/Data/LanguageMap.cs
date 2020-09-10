@@ -52,9 +52,9 @@ namespace Doctrina.ExperienceApi.Data
             var obj = new JObject();
             foreach (var pair in this)
             {
-                if(format == ResultFormat.Canonical)
+                if (format == ResultFormat.Canonical)
                 {
-                    if(pair.Key == CultureInfo.CurrentCulture.Name)
+                    if (pair.Key == CultureInfo.CurrentCulture.Name)
                     {
                         obj[pair.Key] = pair.Value;
                         break;

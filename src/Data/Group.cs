@@ -18,7 +18,7 @@ namespace Doctrina.ExperienceApi.Data
         public Group(JToken group, ApiVersion version) : base(group, version)
         {
             Member = new HashSet<Agent>();
-            
+
             GuardType(group, JTokenType.Object);
 
             ParseObjectType(group["objectType"], ObjectType.Group);

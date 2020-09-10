@@ -7,7 +7,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
         public ContextActivitiesValidator()
         {
             RuleForEach(x => x.Category).SetValidator(new ActivityValidator())
-                .When(x=> x.Category != null);
+                .When(x => x.Category != null);
 
             RuleForEach(x => x.Parent).SetValidator(new ActivityValidator())
                 .When(x => x.Parent != null);

@@ -1,7 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Data.Json.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -43,7 +42,7 @@ namespace Doctrina.ExperienceApi.Data.Json
             {
                 throw new JsonStringException(ex.Message, ex);
             }
-            catch(JsonWriterException ex)
+            catch (JsonWriterException ex)
             {
                 throw new JsonStringException(ex.Message, ex);
             }

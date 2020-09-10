@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Doctrina.ExperienceApi.Data.Exceptions
+﻿namespace Doctrina.ExperienceApi.Data.Exceptions
 {
     public class InteractionTypeException : ExperienceDataException
     {
