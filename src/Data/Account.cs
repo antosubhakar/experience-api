@@ -1,4 +1,4 @@
-﻿using Doctrina.ExperienceApi.Data.Json;
+using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -42,12 +42,12 @@ namespace Doctrina.ExperienceApi.Data
         }
 
         /// <summary>
-        /// The canonical home page for the system the account is on. This is based on FOAF's accountServiceHomePage.
+        /// The canonical home page for the system the account is on.
         /// </summary>
         public Uri HomePage { get; set; }
 
         /// <summary>
-        /// The unique id or name used to log in to this account. This is based on FOAF's accountName.
+        /// The unique id or name used to log in to this account.
         /// </summary>
         public string Name { get; set; }
 
