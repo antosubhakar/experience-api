@@ -1,4 +1,4 @@
-﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Data.Exceptions;
 using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ namespace Doctrina.ExperienceApi.Data
     /// <summary>
     /// An Agent (an individual) is a persona or system.
     /// </summary>
-    public class Agent : StatementObjectBase, IInvenseFunctionalIdenfitiers, IAgent, IStatementObject
+    public class Agent : StatementObjectBase, IAgent, IStatementObject
     {
         protected override ObjectType OBJECT_TYPE => ObjectType.Agent;
 
