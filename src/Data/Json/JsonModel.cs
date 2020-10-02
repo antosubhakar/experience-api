@@ -28,6 +28,8 @@ namespace Doctrina.ExperienceApi.Data.Json
             return ToJToken(version, format)?.ToString(Newtonsoft.Json.Formatting.None);
         }
 
+        public virtual string ToJson() => ToJson(ResultFormat.Exact);
+
         public virtual string ToJson(ResultFormat format = ResultFormat.Exact)
         {
             return ToJson(ApiVersion.GetLatest(), format);

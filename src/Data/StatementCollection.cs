@@ -1,4 +1,4 @@
-﻿using Doctrina.ExperienceApi.Data.Json;
+using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
@@ -97,11 +97,6 @@ namespace Doctrina.ExperienceApi.Data
         IEnumerator IEnumerable.GetEnumerator()
         {
             return Statements.GetEnumerator();
-        }
-
-        public string ToJson()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Doctrina.ExperienceApi.Data.Json;
+using Doctrina.ExperienceApi.Data.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -76,7 +76,7 @@ namespace Doctrina.ExperienceApi.Data
             GuardAdditionalProperties((JObject)statement, "id", "stored", "authority", "version", "object", "actor", "verb", "result", "context", "timestamp", "attachments");
         }
 
-        
+
 
         /// <summary>
         /// UUID assigned by LRS if not set by the Learning Record Provider.
@@ -163,7 +163,7 @@ namespace Doctrina.ExperienceApi.Data
             return base.ToJson(Version, format);
         }
 
-        public string ToJson()
+        public override string ToJson()
         {
             // Override default version
             return base.ToJson(Version, ResultFormat.Exact);

@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data
 {
-    public interface IStatementObject
+    public interface IStatementObject : IJsonData
     {
         ObjectType ObjectType { get; }
 
