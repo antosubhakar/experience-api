@@ -1,4 +1,4 @@
-﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Data.Exceptions;
 using Doctrina.ExperienceApi.Data.Helpers;
 using System;
 using System.Collections.Generic;
@@ -111,29 +111,24 @@ namespace Doctrina.ExperienceApi.Data
             return !(iri1 == iri2);
         }
 
-        //public static bool operator ==(Iri iri, string str)
-        //{
-        //    return iri.ToString() == str;
-        //}
-
-        //public static bool operator !=(Iri iri, string str)
-        //{
-        //    return iri.ToString() != str;
-        //}
-
-        public static explicit operator Uri(Iri d)
+        public static explicit operator Uri(Iri iri)
         {
-            return new Uri(d.ToString());
+            return new Uri(iri.ToString());
         }
 
-        public static explicit operator Iri(Uri d)
+        public static explicit operator Iri(Uri uri)
         {
-            return new Iri(d.ToString());
+            return new Iri(uri.ToString());
         }
 
         public static explicit operator Iri(string strIri)
         {
             return new Iri(strIri);
+        }
+
+        public static explicit operator string(Iri iri)
+        {
+            return iri.ToString();
         }
     }
 
