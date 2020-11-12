@@ -1,4 +1,4 @@
-﻿namespace Doctrina.ExperienceApi.Client.Http
+﻿namespace Doctrina.ExperienceApi.Data.Http
 {
     public static class MediaTypes
     {

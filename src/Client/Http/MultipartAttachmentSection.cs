@@ -1,4 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Data.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 using System.IO;

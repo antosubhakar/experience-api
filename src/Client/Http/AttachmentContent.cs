@@ -1,4 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;

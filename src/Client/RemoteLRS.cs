@@ -2,6 +2,7 @@
 using Doctrina.ExperienceApi.Client.Http.Headers;
 using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Documents;
+using Doctrina.ExperienceApi.Data.Http;
 using Doctrina.ExperienceApi.Data.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;

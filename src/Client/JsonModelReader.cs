@@ -2,6 +2,7 @@
 using Doctrina.ExperienceApi.Client.Http;
 using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Data.Http;
 using Doctrina.ExperienceApi.Data.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;

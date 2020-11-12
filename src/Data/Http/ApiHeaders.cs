@@ -1,6 +1,6 @@
-﻿namespace Doctrina.ExperienceApi.Client.Http
+﻿namespace Doctrina.ExperienceApi.Data.Http
 {
-    public static class ApiHeaders
+    public static partial class ApiHeaders
     {
         public const string ContentTransferEncoding = "Content-Transfer-Encoding";
         public const string XExperienceApiConsistentThrough = "X-Experience-API-Consistent-Through";

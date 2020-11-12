@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Doctrina.ExperienceApi.Data
 {
     /// <summary>
-    /// A collection of <see cref="Statement"/> objects.
+    /// A collection of <see cref="Statement"/>s with <see cref="Attachment"/>s
     /// </summary>
     public class StatementCollection : JsonModel, ICollection<Statement>, IAttachmentByHash
     {
@@ -60,6 +60,9 @@ namespace Doctrina.ExperienceApi.Data
             Statements.CopyTo(array, arrayIndex);
         }
 
+        /// <summary>
+        /// Find attachment by hash on a statement in the collection.
+        /// </summary>
         public Attachment GetAttachmentByHash(string hash)
         {
             foreach (var statement in Statements)
@@ -84,6 +87,7 @@ namespace Doctrina.ExperienceApi.Data
             return Statements.Remove(item);
         }
 
+        /// <inheritdoc/>
         public override JToken ToJToken(ApiVersion version, ResultFormat format)
         {
             var jarr = new JArray();
