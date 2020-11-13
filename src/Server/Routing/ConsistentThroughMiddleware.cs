@@ -18,7 +18,7 @@ namespace Doctrina.ExperienceApi.Server.Routing
         {
             if (context.Request.Path.HasValue && context.Request.Path.StartsWithSegments("/xapi"))
             {
-                string headerKey = ApiHeaders.XExperienceApiConsistentThrough;
+                string headerKey = ExperienceApiHeaders.XExperienceApiConsistentThrough;
                 var headers = context.Response.Headers;
 
                 if (!headers.ContainsKey(headerKey))

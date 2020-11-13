@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Doctrina.ExperienceApi.Server.Http
+namespace Doctrina.ExperienceApi.Server.Extensions
 {
     public static class HttpResponseExtensions
     {

@@ -1,5 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Documents;
+using Doctrina.ExperienceApi.Server.Extensions;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
 using Doctrina.ExperienceApi.Server.Services;
 using Microsoft.AspNetCore.Authorization;

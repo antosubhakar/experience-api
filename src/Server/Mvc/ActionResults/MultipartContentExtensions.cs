@@ -18,8 +18,8 @@ namespace Doctrina.ExperienceApi.Server.Mvc.ActionResults
 
             var byteArrayContent = new ByteArrayContent(attachment.Payload);
             byteArrayContent.Headers.ContentType = new MediaTypeHeaderValue(attachment.ContentType);
-            byteArrayContent.Headers.Add(ApiHeaders.ContentTransferEncoding, "binary");
-            byteArrayContent.Headers.Add(ApiHeaders.XExperienceApiHash, attachment.SHA2);
+            byteArrayContent.Headers.Add(Data.Http.ExperienceApiHeaders.ContentTransferEncoding, "binary");
+            byteArrayContent.Headers.Add(Data.Http.ExperienceApiHeaders.XExperienceApiHash, attachment.SHA2);
             multipart.Add(byteArrayContent);
         }
     }

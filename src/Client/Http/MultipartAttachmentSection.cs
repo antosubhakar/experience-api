@@ -16,7 +16,7 @@ namespace Doctrina.ExperienceApi.Client.Http
 
         private string GetContentTransferEncoding()
         {
-            if (section.Headers.TryGetValue(ApiHeaders.ContentTransferEncoding, out StringValues cteValues))
+            if (section.Headers.TryGetValue(ExperienceApiHeaders.ContentTransferEncoding, out StringValues cteValues))
             {
                 return cteValues;
             }
@@ -25,7 +25,7 @@ namespace Doctrina.ExperienceApi.Client.Http
 
         private string GetExperienceApiHash()
         {
-            if (section.Headers.TryGetValue(ApiHeaders.XExperienceApiHash, out StringValues hashValues))
+            if (section.Headers.TryGetValue(ExperienceApiHeaders.XExperienceApiHash, out StringValues hashValues))
             {
                 return hashValues;
             }
@@ -41,18 +41,18 @@ namespace Doctrina.ExperienceApi.Client.Http
             {
                 if (ContentTransferEncoding != "binary")
                 {
-                    throw new MultipartSectionException($"MUST include a {ApiHeaders.ContentTransferEncoding} parameter with a value of binary in each part's header after the first (Statements) part.");
+                    throw new MultipartSectionException($"MUST include a {ExperienceApiHeaders.ContentTransferEncoding} parameter with a value of binary in each part's header after the first (Statements) part.");
                 }
             }
             else
             {
-                throw new MultipartSectionException($"{ApiHeaders.ContentTransferEncoding}'' header is missing.");
+                throw new MultipartSectionException($"{ExperienceApiHeaders.ContentTransferEncoding}'' header is missing.");
             }
 
             if (string.IsNullOrEmpty(XExperienceApiHash))
             {
                 // MUST include a Content-Transfer-Encoding parameter with a value of binary in each part's header after the first (Statements) part.
-                throw new MultipartSectionException($"'{ApiHeaders.XExperienceApiHash}' is missing.");
+                throw new MultipartSectionException($"'{ExperienceApiHeaders.XExperienceApiHash}' is missing.");
             }
         }
 

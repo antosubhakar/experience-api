@@ -107,7 +107,7 @@ namespace Doctrina.ExperienceApi.Client
                     }
                     else
                     {
-                        throw new JsonModelReaderException($"Header '{ApiHeaders.XExperienceApiHash}: {hash}' does not match any attachments.");
+                        throw new JsonModelReaderException($"Header '{Data.Http.ExperienceApiHeaders.XExperienceApiHash}: {hash}' does not match any attachments.");
                     }
                 }
                 sectionIndex++;

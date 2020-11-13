@@ -49,7 +49,7 @@ namespace Doctrina.ExperienceApi.Client
             }
 
             HttpClient.BaseAddress = new Uri(endpoint.EnsureEndsWith("/"));
-            HttpClient.DefaultRequestHeaders.Add(ApiHeaders.XExperienceApiVersion, version.ToString());
+            HttpClient.DefaultRequestHeaders.Add(Data.Http.ExperienceApiHeaders.XExperienceApiVersion, version.ToString());
             HttpClient.DefaultRequestHeaders.Authorization = new BasicAuthHeaderValue(username, password);
         }
 
@@ -86,7 +86,7 @@ namespace Doctrina.ExperienceApi.Client
             }
 
             Version = version;
-            HttpClient.DefaultRequestHeaders.Add(ApiHeaders.XExperienceApiVersion, version.ToString());
+            HttpClient.DefaultRequestHeaders.Add(Data.Http.ExperienceApiHeaders.XExperienceApiVersion, version.ToString());
             HttpClient.DefaultRequestHeaders.Authorization = authenticationHeader;
             HttpClient.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(culture?.Name ?? CultureInfo.CurrentCulture.Name));
         }

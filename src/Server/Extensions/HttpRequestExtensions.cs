@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace Doctrina.ExperienceApi.Server
+namespace Doctrina.ExperienceApi.Server.Extensions
 {
     public static class HttpRequestExtensions
     {

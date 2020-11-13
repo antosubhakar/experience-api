@@ -19,15 +19,15 @@ namespace Doctrina.ExperienceApi.Server.Mvc.Filters
             var supported = ApiVersion.GetSupported();
             try
             {
-                if (!context.HttpContext.Request.Headers.ContainsKey(ApiHeaders.XExperienceApiVersion))
+                if (!context.HttpContext.Request.Headers.ContainsKey(ExperienceApiHeaders.XExperienceApiVersion))
                 {
-                    throw new Exception($"Missing '{ApiHeaders.XExperienceApiVersion}' header.");
+                    throw new Exception($"Missing '{ExperienceApiHeaders.XExperienceApiVersion}' header.");
                 }
 
-                string requestVersion = context.HttpContext.Request.Headers[ApiHeaders.XExperienceApiVersion];
+                string requestVersion = context.HttpContext.Request.Headers[ExperienceApiHeaders.XExperienceApiVersion];
                 if (string.IsNullOrEmpty(requestVersion))
                 {
-                    throw new Exception($"'{ApiHeaders.XExperienceApiVersion}' header or it's null or empty.");
+                    throw new Exception($"'{ExperienceApiHeaders.XExperienceApiVersion}' header or it's null or empty.");
                 }
 
                 try
@@ -36,14 +36,14 @@ namespace Doctrina.ExperienceApi.Server.Mvc.Filters
                 }
                 catch (Exception)
                 {
-                    throw new Exception($"'{ApiHeaders.XExperienceApiVersion}' header is '{requestVersion}' which is not supported.");
+                    throw new Exception($"'{ExperienceApiHeaders.XExperienceApiVersion}' header is '{requestVersion}' which is not supported.");
                 }
 
                 await next();
             }
             catch (Exception ex)
             {
-                context.HttpContext.Response.Headers.Add(ApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString());
+                context.HttpContext.Response.Headers.Add(ExperienceApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString());
                 context.Result = new BadRequestObjectResult(ex.Message + " Supported Versions are: " + string.Join(", ", supported.Select(x => x.Key)));
             }
         }

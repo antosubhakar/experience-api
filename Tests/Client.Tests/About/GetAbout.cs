@@ -1,6 +1,7 @@
 ﻿using Doctrina.ExperienceApi.Client.Http;
 using Doctrina.ExperienceApi.Client.Http.Headers;
 using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Http;
 using RichardSzalay.MockHttp;
 using Shouldly;
 using System;
@@ -31,7 +32,7 @@ namespace Doctrina.ExperienceApi.Client.Tests.About
             // Setup a respond for the user api (including a wildcard in the URL)
             var request = mockHttp.When(HttpMethod.Get, $"/xAPI/about")
                 .WithHeaders(new Dictionary<string, string>{
-                    { ApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
+                    { ExperienceApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
                     { "Authorization", authHeader.ToString() }
                 })
                 .Respond("application/json", about.ToJson());

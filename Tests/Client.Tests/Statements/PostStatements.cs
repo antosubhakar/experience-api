@@ -1,6 +1,7 @@
 ﻿using Doctrina.ExperienceApi.Client.Http;
 using Doctrina.ExperienceApi.Client.Http.Headers;
 using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Http;
 using RichardSzalay.MockHttp;
 using Shouldly;
 using System;
@@ -27,8 +28,8 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
             var request = mockHttp.When(HttpMethod.Put, $"{baseAddress}/statements")
                 .WithQueryString("statementId", statement.Id?.ToString())
                 .WithHeaders(new Dictionary<string, string>{
-                    { ApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
-                    { ApiHeaders.Authorization, authHeader.ToString() }
+                    { ExperienceApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
+                    { ExperienceApiHeaders.Authorization, authHeader.ToString() }
                 })
                 .Respond(MediaTypes.Application.Json, statement.ToJson());
 
@@ -74,8 +75,8 @@ namespace Doctrina.ExperienceApi.Client.Tests.Statements
             var request = mockHttp.When(HttpMethod.Put, $"{baseAddress}/statements")
                 .WithQueryString("statementId", statement.Id?.ToString())
                 .WithHeaders(new Dictionary<string, string>{
-                    { ApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
-                    { ApiHeaders.Authorization, authHeader.ToString() }
+                    { ExperienceApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString() },
+                    { ExperienceApiHeaders.Authorization, authHeader.ToString() }
                 })
                 .Respond(MediaTypes.Multipart.Mixed, statement.ToJson());
 

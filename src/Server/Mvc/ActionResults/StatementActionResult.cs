@@ -52,7 +52,7 @@ namespace Doctrina.ExperienceApi.Server.Mvc.ActionResults
                 );
             }
 
-            context.HttpContext.Response.Headers.Add(ApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString());
+            context.HttpContext.Response.Headers.Add(ExperienceApiHeaders.XExperienceApiVersion, ApiVersion.GetLatest().ToString());
             await httpContent.CopyToAsync(context.HttpContext.Response.Body);
 
             httpContent.Dispose();

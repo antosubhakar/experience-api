@@ -35,17 +35,17 @@ namespace Doctrina.ExperienceApi.Data.Tests
             json.ShouldBe("{\"value\":null}");
         }
 
-        [Fact]
-        public void Iri_Should_ParseValid_String()
+        [Theory]
+        [InlineData("http://adlnet.gov/expapi/verbs/attended")]
+        [InlineData("https://w3id.org/xapi/adl/verbs/abandoned")]
+        [InlineData("http://adlnet.gov/expapi/verbs/experienced")]
+        public void Iri_Should_ParseValid_String(string verb)
         {
-            // Arrange
-            string verb = "http://adlnet.gov/expapi/verbs/attended";
-
-            // Act
-            // Assert
             Should.NotThrow(() =>
             {
                 var parsed = new Iri(verb);
+
+                parsed.ToString().ShouldBe(verb);
             });
         }
     }

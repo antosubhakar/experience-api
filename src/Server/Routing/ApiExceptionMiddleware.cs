@@ -1,5 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Server.Exceptions;
-using Doctrina.ExperienceApi.Server.Http;
+using Doctrina.ExperienceApi.Server.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.IO;
