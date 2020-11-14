@@ -17,9 +17,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C3173AA3-FCC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A9526A8E-4E17-4175-991B-99C8673BEE65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Tests", "src\Tests\Client.Tests\Client.Tests.csproj", "{C67ED643-7809-42BF-B30E-8C13B946099D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Tests", "Tests\Client.Tests\Client.Tests.csproj", "{C67ED643-7809-42BF-B30E-8C13B946099D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Tests", "src\Tests\Data.Tests\Data.Tests.csproj", "{F0639A60-2000-4360-B324-66B54795703F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Tests", "Tests\Data.Tests\Data.Tests.csproj", "{F0639A60-2000-4360-B324-66B54795703F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
