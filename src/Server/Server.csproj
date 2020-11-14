@@ -29,12 +29,8 @@
   </ItemGroup>
 
   <ItemGroup>
-      <ProjectReference Include="..\Client\Client.csproj" />
-      <ProjectReference Include="..\Data\Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Http\" />
+    <ProjectReference Include="..\Client\Client.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>
