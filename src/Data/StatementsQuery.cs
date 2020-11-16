@@ -8,6 +8,9 @@ using System.Web;
 
 namespace Doctrina.ExperienceApi.Data
 {
+    /// <summary>
+    /// Query parameters for <see cref="StatementsResult"/>
+    /// </summary>
     public class StatementsQuery
     {
         /// <summary>
@@ -41,14 +44,26 @@ namespace Doctrina.ExperienceApi.Data
         public Iri ActivityId { get; set; }
 
         /// <summary>
-        /// Filter, only return Statements matching the specified registration id. Note that although frequently a unique registration will be used for one Actor assigned to one Activity, this cannot be assumed. If only Statements for a certain Actor or Activity are required, those parameters also need to be specified.
+        /// Filter, only return Statements matching the specified registration id. Note that although frequently a unique registration will be used for one Actor assigned to one Activity, this cannot be assumed.<br />
+        /// If only Statements for a certain Actor or Activity are required, those parameters also need to be specified.
         /// </summary>
         [FromQuery(Name = "registration")]
         public Guid? Registration { get; set; }
 
+        /// <summary>
+        /// Apply the Activity filter broadly. Include Statements for which the Object, any of the context Activities, <br />
+        /// or any of those properties in a contained SubStatement match the Activity parameter, instead of that <br />
+        /// parameter's normal behavior. <br />
+        /// Matching is defined in the same way it is for the "activity" parameter.
+        /// </summary>
         [FromQuery(Name = "related_activities")]
         public bool? RelatedActivities { get; set; }
 
+        /// <summary>
+        /// Apply the Agent filter broadly. Include Statements for which the Actor, Object, Authority, Instructor, Team, <br />
+        /// or any of these properties in a contained SubStatement match the Agent parameter, instead of that parameter's <br />
+        /// normal behavior. Matching is defined in the same way it is for the "agent" parameter.
+        /// </summary>
         [FromQuery(Name = "related_agents")]
         public bool? RelatedAgents { get; set; }
 
@@ -70,14 +85,21 @@ namespace Doctrina.ExperienceApi.Data
         [FromQuery(Name = "limit")]
         public int? Limit { get; set; }
 
+        /// <summary>
+        /// Request format: ids, exact or canonical. (default: exact)
+        /// </summary>
         [FromQuery(Name = "format")]
         public ResultFormat? Format { get; set; }
 
+        /// <summary>
+        /// If true, return results in ascending order of stored time	
+        /// </summary>
         [FromQuery(Name = "ascending")]
         public bool? Ascending { get; set; }
 
         /// <summary>
-        /// If true, the LRS uses the multipart response format and includes all attachments as described previously. If false, the LRS sends the prescribed response with Content-Type application/json and does not send attachment data.	
+        /// If <c>true</c>, the LRS uses the multipart response format and includes all attachments as described previously. <br />
+        /// If <c>false</c>, the LRS sends the prescribed response with Content-Type application/json and does not send attachment data.	
         /// </summary>
         [FromQuery(Name = "attachments")]
         public bool? Attachments { get; set; }

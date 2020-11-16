@@ -2,7 +2,7 @@
 using Doctrina.ExperienceApi.Data.Documents;
 using Doctrina.ExperienceApi.Server.Extensions;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
-using Doctrina.ExperienceApi.Server.Services;
+using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -23,9 +23,9 @@ namespace Doctrina.ExperienceApi.Server.Controllers
     [Route("xapi/activities/state")]
     public class ActivitiesStateController : ApiControllerBase
     {
-        private readonly IActivityStateService stateService;
+        private readonly IStateResource stateService;
 
-        public ActivitiesStateController(IActivityStateService activityStateService)
+        public ActivitiesStateController(IStateResource activityStateService)
         {
             stateService = activityStateService;
         }

@@ -1,5 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Data;
-using Doctrina.ExperienceApi.Server.Services;
+using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -12,9 +12,9 @@ namespace Doctrina.ExperienceApi.Server.Controllers
     [Produces("application/json")]
     public class AboutController : ApiControllerBase
     {
-        private readonly IAboutService _aboutService;
+        private readonly IAboutResource _aboutService;
 
-        public AboutController(IAboutService aboutService)
+        public AboutController(IAboutResource aboutService)
         {
             _aboutService = aboutService;
         }

@@ -22,18 +22,33 @@ namespace Doctrina.ExperienceApi.Data
         [JsonProperty("objectType")]
         public string ObjectType { get; private set; } = "Person";
 
+        /// <summary>
+        /// List of names of Agents retrieved.	
+        /// </summary>
         [JsonProperty("name")]
         public List<string> Name { get; set; }
 
+        /// <summary>
+        /// List of e-mail addresses of Agents retrieved.	
+        /// </summary>
         [JsonProperty("mbox")]
         public List<Mbox> Mbox { get; set; }
 
+        /// <summary>
+        /// List of the SHA1 hashes of mailto IRIs (such as go in an mbox property).	
+        /// </summary>
         [JsonProperty("mbox_sha1sum")]
         public List<string> Mbox_sha1sum { get; set; }
 
+        /// <summary>
+        /// List of openids that uniquely identify the Agents retrieved.	
+        /// </summary>
         [JsonProperty("openid")]
         public List<Iri> OpenId { get; set; }
 
+        /// <summary>
+        /// List of accounts to match. Complete account Objects (homePage and name) MUST be provided.
+        /// </summary>
         [JsonProperty("account")]
         public List<Account> Account { get; set; }
 

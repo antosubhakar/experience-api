@@ -1,6 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
-using Doctrina.ExperienceApi.Server.Services;
+using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -15,9 +15,9 @@ namespace Doctrina.ExperienceApi.Server.Controllers
     [Produces("application/json")]
     public class AgentsController : ApiControllerBase
     {
-        private readonly IAgentService _agentService;
+        private readonly IAgentResource _agentService;
 
-        public AgentsController(IAgentService agentService)
+        public AgentsController(IAgentResource agentService)
         {
             _agentService = agentService;
         }

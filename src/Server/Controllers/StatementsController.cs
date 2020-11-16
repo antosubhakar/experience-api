@@ -1,7 +1,7 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Server.Mvc.ActionResults;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
-using Doctrina.ExperienceApi.Server.Services;
+using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -23,9 +23,9 @@ namespace Doctrina.ExperienceApi.Server.Controllers
     [Produces("application/json")]
     public class StatementsController : ApiControllerBase
     {
-        private readonly IStatementService _statementService;
+        private readonly IStatementResource _statementService;
 
-        public StatementsController(IStatementService statementService)
+        public StatementsController(IStatementResource statementService)
         {
             _statementService = statementService;
         }

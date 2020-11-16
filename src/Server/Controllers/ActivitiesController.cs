@@ -1,6 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
-using Doctrina.ExperienceApi.Server.Services;
+using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
@@ -15,9 +15,9 @@ namespace Doctrina.ExperienceApi.Server.Controllers
     [Route("xapi/activities")]
     public class ActivitiesController : ApiControllerBase
     {
-        private readonly IActivityService activityService;
+        private readonly IActivityResource activityService;
 
-        public ActivitiesController(IActivityService activityService)
+        public ActivitiesController(IActivityResource activityService)
         {
             this.activityService = activityService;
         }

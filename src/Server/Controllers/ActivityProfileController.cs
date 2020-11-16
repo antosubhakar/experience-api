@@ -2,7 +2,7 @@
 using Doctrina.ExperienceApi.Data.Documents;
 using Doctrina.ExperienceApi.Server.Extensions;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
-using Doctrina.ExperienceApi.Server.Services;
+using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +22,9 @@ namespace Doctrina.ExperienceApi.Server.Controllers
     [Produces("application/json")]
     public class ActivityProfileController : ApiControllerBase
     {
-        private readonly IActivityProfileService _profileService;
+        private readonly IActivityProfileResource _profileService;
 
-        public ActivityProfileController(IActivityProfileService profileService)
+        public ActivityProfileController(IActivityProfileResource profileService)
         {
             _profileService = profileService;
         }
@@ -48,7 +48,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            ActivityProfileDocument profile = await _profileService.GetActivityProfile(profileId, activityId, registration, cancellationToken);
+            ActivityProfileDocument profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
 
             if (profile == null)
             {
@@ -118,7 +118,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ActivityProfileDocument profile = await _profileService.GetActivityProfile(profileId, activityId, registration, cancellationToken);
+            ActivityProfileDocument profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
 
             if (Request.TryConcurrencyCheck(profile?.Tag, profile?.LastModified, out int statusCode))
             {
@@ -133,11 +133,11 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                     return Conflict();
                 }
 
-                await _profileService.UpdateProfile(profileId, activityId, body, contentType, registration, cancellationToken);
+                await _profileService.UpdateProfile(activityId, profileId, body, contentType, registration, cancellationToken);
             }
             else
             {
-               profile = await _profileService.CreateProfile(profileId, activityId, body, contentType, registration, cancellationToken);
+               profile = await _profileService.CreateProfile(activityId, profileId, body, contentType, registration, cancellationToken);
             }
 
             return NoContent();
@@ -161,7 +161,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            var profile = await _profileService.GetActivityProfile(profileId, activityId, registration, cancellationToken);
+            var profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
 
             if (profile == null)
             {
@@ -173,7 +173,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return StatusCode(statusCode);
             }
 
-            await _profileService.DeleteActivityProfile(profileId, activityId, registration, cancellationToken);
+            await _profileService.DeleteActivityProfile(activityId, profileId, registration, cancellationToken);
 
             return NoContent();
         }

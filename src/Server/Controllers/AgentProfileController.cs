@@ -2,7 +2,7 @@
 using Doctrina.ExperienceApi.Data.Documents;
 using Doctrina.ExperienceApi.Server.Extensions;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
-using Doctrina.ExperienceApi.Server.Services;
+using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -20,9 +20,9 @@ namespace Doctrina.ExperienceApi.Server.Controllers
     [Route("xapi/agents/profile")]
     public class AgentProfileController : ApiControllerBase
     {
-        private readonly IAgentProfileService profileService;
+        private readonly IAgentProfileResource profileService;
 
-        public AgentProfileController(IAgentProfileService profileService)
+        public AgentProfileController(IAgentProfileResource profileService)
         {
             this.profileService = profileService;
         }
@@ -40,7 +40,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            AgentProfileDocument profile = await profileService.GetAgentProfile(profileId, agent, cancellationToken);
+            AgentProfileDocument profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
 
             if (profile == null)
             {
@@ -101,7 +101,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            AgentProfileDocument profile = await profileService.GetAgentProfile(profileId, agent, cancellationToken);
+            AgentProfileDocument profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
 
             if (Request.TryConcurrencyCheck(profile?.Tag, profile?.LastModified, out int statusCode))
             {
@@ -135,7 +135,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            var profile = await profileService.GetAgentProfile(profileId, agent, cancellationToken);
+            var profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
 
             if (Request.TryConcurrencyCheck(profile?.Tag, profile?.LastModified, out int statusCode))
             {
@@ -147,7 +147,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return NotFound();
             }
 
-            await profileService.DeleteAgentProfile(profileId, agent, cancellationToken);
+            await profileService.DeleteAgentProfile(agent, profileId, cancellationToken);
 
             return NoContent();
         }
