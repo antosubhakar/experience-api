@@ -2,6 +2,7 @@
 using Doctrina.ExperienceApi.Client.Http;
 using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Data.Http;
 using Doctrina.ExperienceApi.Data.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
@@ -106,7 +107,7 @@ namespace Doctrina.ExperienceApi.Client
                     }
                     else
                     {
-                        throw new JsonModelReaderException($"Header '{ApiHeaders.XExperienceApiHash}: {hash}' does not match any attachments.");
+                        throw new JsonModelReaderException($"Header '{Data.Http.ExperienceApiHeaders.XExperienceApiHash}: {hash}' does not match any attachments.");
                     }
                 }
                 sectionIndex++;

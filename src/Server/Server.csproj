@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>7.1</LangVersion>
+    <Configurations>Debug;Release;Test</Configurations>
+    <AssemblyName>Doctrina.ExperienceApi.Server</AssemblyName>
+    <RootNamespace>Doctrina.ExperienceApi.Server</RootNamespace>
+    <PackageLicenseFile></PackageLicenseFile>
+    <Version>0.0.1-alpha</Version>
+    <Copyright>Copyright (c) 2019 - Present Bitflipping.net</Copyright>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Company>Bitflipping.net</Company>
+    <Authors>bitflipping-net</Authors>
+    <RepositoryUrl>https://github.com/bitflipping-net/experience-api</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>xapi</PackageTags>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <UseNugetPackage>False</UseNugetPackage>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\Client.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
+  </ItemGroup>
+
+</Project>

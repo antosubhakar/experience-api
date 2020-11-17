@@ -1,4 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Doctrina.ExperienceApi.Client.Http
         {
             get
             {
-                if (base.Headers.TryGetValues(ApiHeaders.XExperienceApiHash, out IEnumerable<string> values))
+                if (base.Headers.TryGetValues(Data.Http.ExperienceApiHeaders.XExperienceApiHash, out IEnumerable<string> values))
                 {
                     return values.FirstOrDefault();
                 }
@@ -21,7 +22,7 @@ namespace Doctrina.ExperienceApi.Client.Http
             }
             set
             {
-                base.Headers.TryAddWithoutValidation(ApiHeaders.XExperienceApiHash, value);
+                base.Headers.TryAddWithoutValidation(Data.Http.ExperienceApiHeaders.XExperienceApiHash, value);
             }
         }
 
@@ -63,7 +64,7 @@ namespace Doctrina.ExperienceApi.Client.Http
             }
 
             base.Headers.ContentType = new MediaTypeHeaderValue(attachment.ContentType);
-            base.Headers.TryAddWithoutValidation(ApiHeaders.XExperienceApiHash, attachment.SHA2);
+            base.Headers.TryAddWithoutValidation(Data.Http.ExperienceApiHeaders.XExperienceApiHash, attachment.SHA2);
         }
     }
 }

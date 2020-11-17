@@ -1,5 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Data.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;

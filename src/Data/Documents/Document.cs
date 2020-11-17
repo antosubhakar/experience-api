@@ -2,7 +2,7 @@
 
 namespace Doctrina.ExperienceApi.Data.Documents
 {
-    public abstract class Document : IDocument
+    public class Document : IDocument
     {
         /// <summary>
         /// Gets or sets the opaque quoted string.
@@ -17,5 +17,6 @@ namespace Doctrina.ExperienceApi.Data.Documents
         public string ContentType { get; set; }
 
         public byte[] Content { get; set; }
+        public string Id { get; set; }
     }
 }

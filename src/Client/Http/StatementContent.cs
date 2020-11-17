@@ -1,4 +1,5 @@
 ﻿using Doctrina.ExperienceApi.Data;
+using Doctrina.ExperienceApi.Data.Http;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net;
