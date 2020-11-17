@@ -14,8 +14,6 @@ namespace Doctrina.ExperienceApi.Server.Authentication
     /// </summary>
     public class LrsBasicClientHandler : AuthenticationHandler<ExperienceApiAuthenticationOptions>
     {
-        private readonly IWebHostEnvironment _environment;
-
         public LrsBasicClientHandler(
             IOptionsMonitor<ExperienceApiAuthenticationOptions> options,
             ILoggerFactory logger,

@@ -12,7 +12,8 @@ namespace Doctrina.ExperienceApi.Server
         public static IApplicationBuilder UseExperienceApiEndpoints(this IApplicationBuilder builder, Action<ApiEndpointOptions> options = null)
         {
             var defaultOptions = new ApiEndpointOptions();
-            options.Invoke(defaultOptions);
+
+            options?.Invoke(defaultOptions);
 
             builder.MapWhen(context => context.Request.Path.StartsWithSegments(defaultOptions.Path), experienceApi =>
             {

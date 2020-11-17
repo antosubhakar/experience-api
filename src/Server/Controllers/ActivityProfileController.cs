@@ -48,7 +48,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            ActivityProfileDocument profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
+            IDocument profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
 
             if (profile == null)
             {
@@ -82,14 +82,14 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            ICollection<ActivityProfileDocument> profiles = await _profileService.GetActivityProfiles(activityId, since, cancellationToken);
+            ICollection<IDocument> profiles = await _profileService.GetActivityProfiles(activityId, since, cancellationToken);
                 
             if (profiles == null)
             {
                 return Ok(Array.Empty<string>());
             }
 
-            IEnumerable<string> ids = profiles.Select(x => x.ProfileId);
+            IEnumerable<string> ids = profiles.Select(x => x.Id);
             string lastModified = profiles.OrderByDescending(x => x.LastModified)
                 .FirstOrDefault()?.LastModified?.ToString("o");
 
@@ -118,7 +118,8 @@ namespace Doctrina.ExperienceApi.Server.Controllers
             {
                 return BadRequest(ModelState);
             }
-            ActivityProfileDocument profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
+
+            IDocument profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
 
             if (Request.TryConcurrencyCheck(profile?.Tag, profile?.LastModified, out int statusCode))
             {
@@ -161,7 +162,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            var profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
+            IDocument profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
 
             if (profile == null)
             {

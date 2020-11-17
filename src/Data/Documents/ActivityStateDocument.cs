@@ -5,9 +5,6 @@ namespace Doctrina.ExperienceApi.Data.Documents
 {
     public class ActivityStateDocument : Document, IActivityStateDocument
     {
-        [JsonProperty("stateId")]
-        public string StateId { get; set; }
-
         [JsonProperty("activity")]
         public Activity Activity { get; set; }
 

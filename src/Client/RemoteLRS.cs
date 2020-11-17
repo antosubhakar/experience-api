@@ -479,7 +479,7 @@ namespace Doctrina.ExperienceApi.Client
             builder.Path += "/activities/state";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
-            query.Add("stateId", state.StateId);
+            query.Add("stateId", state.Id);
             query.Add("activityId", state.Activity.Id.ToString());
             query.Add("agent", state.Agent.ToString());
 
@@ -528,7 +528,7 @@ namespace Doctrina.ExperienceApi.Client
             builder.Path += "/activities/state";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
-            query.Add("stateId", state.StateId);
+            query.Add("stateId", state.Id);
             query.Add("activityId", state.Activity.Id.ToString());
             query.Add("agent", state.Agent.ToString());
 
@@ -660,7 +660,7 @@ namespace Doctrina.ExperienceApi.Client
 
             var profile = new ActivityProfileDocument
             {
-                ProfileId = profileId,
+                Id = profileId,
                 ActivityId = activityId,
                 Content = await response.Content.ReadAsByteArrayAsync(),
                 ContentType = response.Content.Headers.ContentType.ToString(),
@@ -676,7 +676,7 @@ namespace Doctrina.ExperienceApi.Client
             builder.Path += "/activities/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
-            query.Add("profileId", profile.ProfileId);
+            query.Add("profileId", profile.Id);
             query.Add("activityId", profile.ActivityId.ToString());
 
             if (profile.Registration.HasValue)
@@ -723,7 +723,7 @@ namespace Doctrina.ExperienceApi.Client
             builder.Path += "/activities/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
-            query.Add("profileId", profile.ProfileId);
+            query.Add("profileId", profile.Id);
             query.Add("activityId", profile.ActivityId.ToString());
 
             builder.Query = query.ToString();
@@ -800,7 +800,7 @@ namespace Doctrina.ExperienceApi.Client
 
             var profile = new AgentProfileDocument
             {
-                ProfileId = profileId,
+                Id = profileId,
                 Agent = agent,
                 Content = await response.Content.ReadAsByteArrayAsync(),
                 ContentType = response.Content.Headers.ContentType.ToString(),
@@ -816,7 +816,7 @@ namespace Doctrina.ExperienceApi.Client
             builder.Path += "/agents/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
-            query.Add("profileId", profile.ProfileId);
+            query.Add("profileId", profile.Id);
             query.Add("agent", profile.Agent.ToString());
 
             builder.Query = query.ToString();
@@ -855,7 +855,7 @@ namespace Doctrina.ExperienceApi.Client
             builder.Path += "/agents/profile";
 
             var query = HttpUtility.ParseQueryString(string.Empty);
-            query.Add("profileId", profile.ProfileId);
+            query.Add("profileId", profile.Id);
             query.Add("agent", profile.Agent.ToString());
 
             builder.Query = query.ToString();

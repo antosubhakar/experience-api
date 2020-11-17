@@ -57,7 +57,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 );
             }
 
-            ActivityStateDocument stateDocument = await stateService.GetActivityState(stateId, activityId, agent, registration, cancellationToken);
+            IDocument stateDocument = await stateService.GetActivityState(stateId, activityId, agent, registration, cancellationToken);
 
             if (stateDocument == null)
             {
@@ -92,14 +92,14 @@ namespace Doctrina.ExperienceApi.Server.Controllers
             DateTime? since = null,
             CancellationToken cancellationToken = default)
         {
-            ICollection<ActivityStateDocument> states = await stateService.GetActivityStates(activityId, agent, registration, since, cancellationToken);
+            ICollection<IDocument> states = await stateService.GetActivityStates(activityId, agent, registration, since, cancellationToken);
 
             if (states.Count <= 0)
             {
                 return Ok(Array.Empty<string>());
             }
 
-            IEnumerable<string> ids = states.Select(x => x.StateId);
+            IEnumerable<string> ids = states.Select(x => x.Id);
             string lastModified = states.OrderByDescending(x => x.LastModified)
                 .FirstOrDefault()?.LastModified?.ToString("o");
             Response.Headers.Add("LastModified", lastModified);
@@ -124,7 +124,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            ActivityStateDocument stateDocument = await stateService.PostSingleState(stateId, activityId, agent, body, contentType, registration, cancellationToken);
+            IDocument stateDocument = await stateService.PostSingleState(stateId, activityId, agent, body, contentType, registration, cancellationToken);
 
             Response.Headers.Add(HeaderNames.ETag, $"\"{stateDocument.Tag}\"");
             Response.Headers.Add(HeaderNames.LastModified, stateDocument.LastModified?.ToString("o"));
@@ -156,7 +156,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
             else
             {
 
-                ActivityStateDocument stateDocument = await stateService.GetActivityState(stateId, activityId, agent, registration, cancellationToken);
+                IDocument stateDocument = await stateService.GetActivityState(stateId, activityId, agent, registration, cancellationToken);
 
                 if (stateDocument == null)
                 {

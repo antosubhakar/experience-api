@@ -18,7 +18,7 @@ namespace Doctrina.ExperienceApi.Server.Resources
         /// <param name="agent">The agent limit by.</param>
         /// <param name="profileId">The id associated with the <see cref="AgentProfileDocument"/>.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        Task<AgentProfileDocument> GetAgentProfile(Agent agent, string profileId, CancellationToken cancellationToken = default);
+        Task<IDocument> GetAgentProfile(Agent agent, string profileId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Fetches Profile ids of all Profile documents for an Agent. 
@@ -26,7 +26,7 @@ namespace Doctrina.ExperienceApi.Server.Resources
         /// <param name="agent">The agent limit by.</param>
         /// <param name="since">If specified, this limits to entries that have been stored or updated since the specified Timestamp (exclusive)</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        Task<ICollection<AgentProfileDocument>> GetAgentProfiles(Agent agent, DateTimeOffset? since = null, CancellationToken cancellationToken = default);
+        Task<ICollection<IDocument>> GetAgentProfiles(Agent agent, DateTimeOffset? since = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Stores an document profile in the context of the specified <paramref name="agent"/>.
@@ -36,7 +36,7 @@ namespace Doctrina.ExperienceApi.Server.Resources
         /// <param name="content">The contents of the <see cref="AgentProfileDocument"/></param>
         /// <param name="contentType">The content type of the <see cref="AgentProfileDocument"/></param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        Task<AgentProfileDocument> CreateAgentProfile(Agent agent, string profileId, byte[] content, string contentType, CancellationToken cancellationToken = default);
+        Task<IDocument> CreateAgentProfile(Agent agent, string profileId, byte[] content, string contentType, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Update an <see cref="AgentProfileDocument"/> in the store.
@@ -46,7 +46,7 @@ namespace Doctrina.ExperienceApi.Server.Resources
         /// <param name="content">The contents of the profile.</param>
         /// <param name="contentType">The content type of the profile.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        Task<AgentProfileDocument> UpdateAgentProfile(Agent agent, string profileId, byte[] content, string contentType, CancellationToken cancellationToken = default);
+        Task<IDocument> UpdateAgentProfile(Agent agent, string profileId, byte[] content, string contentType, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deltes an <see cref="AgentProfileDocument"/> from the store.

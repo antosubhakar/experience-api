@@ -17,5 +17,6 @@ namespace Doctrina.ExperienceApi.Data.Documents
         public string ContentType { get; set; }
 
         public byte[] Content { get; set; }
+        public string Id { get; set; }
     }
 }

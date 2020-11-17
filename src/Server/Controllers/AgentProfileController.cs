@@ -40,7 +40,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            AgentProfileDocument profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
+            IDocument profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
 
             if (profile == null)
             {
@@ -72,14 +72,14 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            var profiles = await profileService.GetAgentProfiles(agent, since, cancellationToken);
+            ICollection<IDocument> profiles = await profileService.GetAgentProfiles(agent, since, cancellationToken);
 
             if (profiles == null || profiles.Count == 0)
             {
                 return Ok(Array.Empty<Guid>());
             }
 
-            IEnumerable<string> ids = profiles.Select(x => x.ProfileId).ToList();
+            IEnumerable<string> ids = profiles.Select(x => x.Id).ToList();
 
             string lastModified = profiles.OrderByDescending(x => x.LastModified)
                 .FirstOrDefault()?.LastModified?.ToString("o");
@@ -101,7 +101,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            AgentProfileDocument profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
+            IDocument profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
 
             if (Request.TryConcurrencyCheck(profile?.Tag, profile?.LastModified, out int statusCode))
             {
@@ -135,7 +135,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            var profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
+            IDocument profile = await profileService.GetAgentProfile(agent, profileId, cancellationToken);
 
             if (Request.TryConcurrencyCheck(profile?.Tag, profile?.LastModified, out int statusCode))
             {
