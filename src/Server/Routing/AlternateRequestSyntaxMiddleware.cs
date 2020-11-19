@@ -26,26 +26,27 @@ namespace Doctrina.ExperienceApi.Server.Routing
 
         public AlternateRequestMiddleware(RequestDelegate next)
         {
-            _next = next;
+            this._next = next;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
             if (context.Request.Path.HasValue && context.Request.Path.Value.StartsWith("/xapi/"))
             {
-                try
-                {
-                    AlternateRequest(context);
-                }
-                catch (BadRequestException ex)
-                {
-                    await context.Response.WriteBadRequest(new { message = ex.Message }, contentType: "application/json");
-                }
+                await AlternateRequest(context);
             }
-            await _next(context);
+            else
+            {
+                await _next(context);
+            }
         }
 
-        private void AlternateRequest(HttpContext context)
+        private static async Task BadRequest(HttpContext context, string message)
+        {
+            await context.Response.WriteBadRequest(new { message = message }, contentType: "application/json");
+        }
+
+        private Task AlternateRequest(HttpContext context)
         {
             var request = context.Request;
 
@@ -53,28 +54,28 @@ namespace Doctrina.ExperienceApi.Server.Routing
             string methodQuery = request.Query["method"].FirstOrDefault()?.ToUpperInvariant();
             if (string.IsNullOrWhiteSpace(methodQuery))
             {
-                return;
+                return Task.CompletedTask;
             }
 
             if (request.Method.ToUpperInvariant() != "POST")
             {
-                throw new BadRequestException("An LRS rejects an alternate request syntax not issued as a POST");
+                return BadRequest(context, "An LRS rejects an alternate request syntax not issued as a POST");
             }
 
             if (!allowedMethodNames.Contains(methodQuery))
             {
-                throw new BadRequestException($"Query parameter method \"{methodQuery}\" is not alloed. ");
+                return BadRequest(context, $"Query parameter method \"{methodQuery}\" is not alloed. ");
             }
 
             // Multiple query parameters are not allowed
             if (request.Query.Count != 1)
             {
-                throw new BadRequestException("An LRS will reject an alternate request syntax which contains any extra information with error code 400 Bad Request (Communication 1.3.s3.b4)");
+                return BadRequest(context, "An LRS will reject an alternate request syntax which contains any extra information with error code 400 Bad Request (Communication 1.3.s3.b4)");
             }
 
             if (!request.HasFormContentType)
             {
-                throw new BadRequestException("Alternate request syntax sending content does not have a form parameter with the name of \"content\"");
+                return BadRequest(context, "Alternate request syntax sending content does not have a form parameter with the name of \"content\"");
             }
 
             // Set request method to query method
@@ -90,7 +91,7 @@ namespace Doctrina.ExperienceApi.Server.Routing
                 {
                     // An LRS will reject an alternate request syntax sending content which does not have a form parameter with the name of \"content\" (Communication 1.3.s3.b4)
                     context.Response.StatusCode = 400;
-                    throw new BadRequestException("Alternate request syntax sending content does not have a form parameter with the name of \"content\"");
+                    return BadRequest(context, "Alternate request syntax sending content does not have a form parameter with the name of \"content\"");
                 }
             }
 
@@ -100,7 +101,7 @@ namespace Doctrina.ExperienceApi.Server.Routing
 
                 if (unsafeUrlRegex.IsMatch(urlEncodedContent))
                 {
-                    throw new BadRequestException($"Form data 'content' contains unsafe charactors.");
+                    return BadRequest(context, $"Form data 'content' contains unsafe charactors.");
                 }
 
                 string decodedContent = HttpUtility.UrlDecode(urlEncodedContent);
@@ -143,6 +144,8 @@ namespace Doctrina.ExperienceApi.Server.Routing
             {
                 request.QueryString = new QueryString();
             }
+
+            return _next(context);
         }
     }
 }

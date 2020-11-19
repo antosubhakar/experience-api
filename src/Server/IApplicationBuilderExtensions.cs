@@ -6,6 +6,21 @@ namespace Doctrina.ExperienceApi.Server
 {
     public static class IApplicationBuilderExtensions
     {
+        public static IApplicationBuilder UseAlternateRequestSyntax(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<ApiExceptionMiddleware>();
+        }
+
+        public static IApplicationBuilder UseUnrecognizedParameters(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<UnrecognizedParametersMiddleware>();
+        }
+
+        public static IApplicationBuilder UseConsistentThrough(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<ConsistentThroughMiddleware>();
+        }
+
         /// <summary>
         /// Maps required middlewares for the LRS Server to receive statements from clients
         /// </summary>
@@ -17,16 +32,9 @@ namespace Doctrina.ExperienceApi.Server
 
             builder.MapWhen(context => context.Request.Path.StartsWithSegments(defaultOptions.Path), experienceApi =>
             {
-                //experienceApi.UseExceptionHandler(errorApp => {
-                //    errorApp.Run(async context =>
-                //    {
-                //        context.Get
-                //    });
-                //});
-
                 experienceApi.UseMiddleware<ApiExceptionMiddleware>();
 
-                experienceApi.UseMiddleware<AlternateRequestMiddleware>();
+                experienceApi.UseAlternateRequestSyntax();
 
                 experienceApi.UseRequestLocalization();
 
@@ -35,8 +43,9 @@ namespace Doctrina.ExperienceApi.Server
                 experienceApi.UseAuthentication();
                 experienceApi.UseAuthorization();
 
-                experienceApi.UseMiddleware<ConsistentThroughMiddleware>();
-                experienceApi.UseMiddleware<UnrecognizedParametersMiddleware>();
+                experienceApi.UseConsistentThrough();
+
+                experienceApi.UseUnrecognizedParameters();
 
                 experienceApi.UseEndpoints(routes =>
                 {
