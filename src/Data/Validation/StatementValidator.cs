@@ -60,6 +60,12 @@ namespace Doctrina.ExperienceApi.Data.Validation
                             continue;
                         }
 
+                        string alg = jws.ProtectedHeader.Value<string>("alg");
+                        if (!new string[] { "RS256", "RS384", "RS512" }.Contains(alg))
+                        {
+                            context.AddFailure($"Attachments[{i}].Pyload", "The JWS signature MUST use an algorithm of \"RS256\", \"RS384\", or \"RS512\".");
+                        }
+
                         var jsonString = new JsonString(jws.Payload);
                         if (!jsonString.IsValid())
                         {
