@@ -31,7 +31,7 @@ namespace Doctrina.ExperienceApi.Data.Validation
 
             RuleFor(x => x.Object.ObjectType)
                 .Equal(ObjectType.StatementRef)
-                .When(x => x.Verb?.Id?.ToString() == KnownVerbs.Voided)
+                .When(x => x.Verb?.Id == KnownVerbs.Voided)
                 .WithMessage("When statement verb is voided, statement object must be StatementRef.");
 
             RuleFor(x => x).Custom((statement, context) =>

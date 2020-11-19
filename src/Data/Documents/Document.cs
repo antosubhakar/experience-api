@@ -14,6 +14,9 @@ namespace Doctrina.ExperienceApi.Data.Documents
         /// </summary>
         public DateTimeOffset? LastModified { get; set; }
 
+        /// <summary>
+        /// Content type of the content
+        /// </summary>
         public string ContentType { get; set; }
 
         public byte[] Content { get; set; }

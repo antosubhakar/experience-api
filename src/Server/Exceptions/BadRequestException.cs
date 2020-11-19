@@ -1,19 +1,17 @@
-﻿using System;
+﻿using System.Net;
+using Doctrina.ExperienceApi.Data.Exceptions;
 
 namespace Doctrina.ExperienceApi.Server.Exceptions
 {
-    public class BadRequestException : ServerException
+    public class BadRequestException : StatusCodeException
     {
-        public BadRequestException(string message) : base(message)
+        public BadRequestException(string message)
+            : base((int)HttpStatusCode.BadRequest, message)
         {
         }
 
         public BadRequestException()
-        {
-        }
-
-        public BadRequestException(string message, Exception innerException) 
-            : base(message, innerException)
+        : base((int)HttpStatusCode.BadRequest)
         {
         }
     }

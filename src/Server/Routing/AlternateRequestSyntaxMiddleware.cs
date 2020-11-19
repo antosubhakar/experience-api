@@ -1,9 +1,11 @@
 ﻿using Doctrina.ExperienceApi.Server.Exceptions;
+using Doctrina.ExperienceApi.Server.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -27,13 +29,20 @@ namespace Doctrina.ExperienceApi.Server.Routing
             _next = next;
         }
 
-        public Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             if (context.Request.Path.HasValue && context.Request.Path.Value.StartsWith("/xapi/"))
             {
-                AlternateRequest(context);
+                try
+                {
+                    AlternateRequest(context);
+                }
+                catch (BadRequestException ex)
+                {
+                    await context.Response.WriteBadRequest(new { message = ex.Message }, contentType: "application/json");
+                }
             }
-            return _next(context);
+            await _next(context);
         }
 
         private void AlternateRequest(HttpContext context)

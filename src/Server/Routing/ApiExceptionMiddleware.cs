@@ -1,4 +1,5 @@
-﻿using Doctrina.ExperienceApi.Server.Exceptions;
+﻿using Doctrina.ExperienceApi.Data.Exceptions;
+using Doctrina.ExperienceApi.Server.Exceptions;
 using Doctrina.ExperienceApi.Server.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -40,11 +41,20 @@ namespace Doctrina.ExperienceApi.Server.Routing
                     logger.LogError(ex, "Request was cancelled");
                     return;
                 }
-                else if (ex is ValidationException)
+                else if (typeof(StatusCodeException).IsAssignableFrom(ex.GetType()))
                 {
+                    var exception = (StatusCodeException)ex;
                     context.Response.ContentType = "application/json";
-                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    await context.Response.WriteJsonAsync(new { failures = ((ValidationException)ex).Failures });
+                    context.Response.StatusCode = (int)exception.StatusCode;
+
+                    if (ex is ValidationException)
+                    {
+                        await context.Response.WriteJsonAsync(new { failures = ((ValidationException)ex).Failures });
+                    }
+                    else
+                    {
+                        await context.Response.WriteJsonAsync(new { message = ex.Message });
+                    }
                     return;
                 }
                 else if (ex is BadRequestException
@@ -53,7 +63,6 @@ namespace Doctrina.ExperienceApi.Server.Routing
                 {
                     context.Response.ContentType = "application/json";
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    await context.Response.WriteJsonAsync(new { message = ex.Message });
                     return;
                 }
                 else if (ex is NotFoundException)

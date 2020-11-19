@@ -1,8 +1,10 @@
-﻿namespace Doctrina.ExperienceApi.Data
+﻿using System;
+
+namespace Doctrina.ExperienceApi.Data
 {
     public interface IActivity
     {
-        Iri Id { get; set; }
-        ActivityDefinition Definition { get; set; }
+        Iri Id { get; }
+        ActivityDefinition Definition { get; }
     }
 }

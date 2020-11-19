@@ -1,5 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Data.Json;
 using Microsoft.AspNetCore.Http;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,6 +8,12 @@ namespace Doctrina.ExperienceApi.Server.Extensions
 {
     public static class HttpResponseExtensions
     {
+        public static async Task WriteBadRequest(this HttpResponse response, object o, string contentType = null, CancellationToken cancellationToken = default)
+        {
+            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            await WriteJsonAsync(response, o, contentType, cancellationToken);
+        }
+
         public static async Task WriteJsonAsync(this HttpResponse response, object o, string contentType = null, CancellationToken cancellationToken = default)
         {
             var json = ObjectSerializer.ToString(o);
