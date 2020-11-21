@@ -77,7 +77,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
             }
 
             StatementsResult result =  await _statementService.GetStatementsResult(parameters);
-            return new StatementsActionResult(result, format, attachments);
+            return new StatementsActionResult(result, format, (bool)attachments);
         }
 
         /// <summary>

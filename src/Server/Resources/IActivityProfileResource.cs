@@ -1,7 +1,7 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Documents;
+using Doctrina.ExperienceApi.Server.Models;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +27,7 @@ namespace Doctrina.ExperienceApi.Server.Resources
         /// <param name="activityId">The Activity id associated with this Profile document.</param>
         /// <param name="since">If "since" parameter is specified, this is limited to entries that have been stored or updated since the specified Timestamp (exclusive).</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        Task<ICollection<IDocument>> GetActivityProfiles(Iri activityId, DateTimeOffset? since, CancellationToken cancellationToken = default);
+        Task<MultipleDocumentResult> GetActivityProfiles(Iri activityId, DateTimeOffset? since, CancellationToken cancellationToken = default);
         Task UpdateProfile(Iri activityId, string profileId, byte[] body, string contentType, Guid? registration, CancellationToken cancellationToken = default);
         Task<IDocument> CreateProfile(Iri activityId, string profileId, byte[] body, string contentType, Guid? registration, CancellationToken cancellationToken = default);
         Task DeleteActivityProfile(Iri activityId, string profileId, Guid? registration, CancellationToken cancellationToken = default);

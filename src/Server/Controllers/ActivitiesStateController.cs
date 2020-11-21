@@ -1,6 +1,8 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Documents;
 using Doctrina.ExperienceApi.Server.Extensions;
+using Doctrina.ExperienceApi.Server.Models;
+using Doctrina.ExperienceApi.Server.Mvc.ActionResults;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
 using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
@@ -57,24 +59,19 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 );
             }
 
-            IDocument stateDocument = await stateService.GetActivityState(stateId, activityId, agent, registration, cancellationToken);
+            IDocument document = await stateService.GetActivityState(stateId, activityId, agent, registration, cancellationToken);
 
-            if (stateDocument == null)
+            if (document == null)
             {
                 return NotFound();
             }
 
-            if (Request.TryConcurrencyCheck(stateDocument.Tag, stateDocument.LastModified, out int statusCode))
+            if (Request.TryConcurrencyCheck(document.Tag, document.LastModified, out int statusCode))
             {
                 return StatusCode(statusCode);
             }
 
-            var content = new FileContentResult(stateDocument.Content, stateDocument.ContentType.ToString())
-            {
-                LastModified = stateDocument.LastModified,
-                EntityTag = new EntityTagHeaderValue($"\"{stateDocument.Tag}\"")
-            };
-            return content;
+            return new DocumentResult(document);
         }
 
         /// <summary>
@@ -92,19 +89,16 @@ namespace Doctrina.ExperienceApi.Server.Controllers
             DateTime? since = null,
             CancellationToken cancellationToken = default)
         {
-            ICollection<IDocument> states = await stateService.GetActivityStates(activityId, agent, registration, since, cancellationToken);
+            MultipleDocumentResult result = await stateService.GetActivityStates(activityId, agent, registration, since, cancellationToken);
 
-            if (states.Count <= 0)
+            if (result.IsEmpty)
             {
                 return Ok(Array.Empty<string>());
             }
 
-            IEnumerable<string> ids = states.Select(x => x.Id);
-            string lastModified = states.OrderByDescending(x => x.LastModified)
-                .FirstOrDefault()?.LastModified?.ToString("o");
-            Response.Headers.Add("LastModified", lastModified);
+            Response.Headers.Add("LastModified", result.LastModified?.ToString("o"));
 
-            return Ok(ids);
+            return Ok(result.Ids);
         }
 
         // PUT|POST xapi/activities/state
@@ -156,9 +150,9 @@ namespace Doctrina.ExperienceApi.Server.Controllers
             else
             {
 
-                IDocument stateDocument = await stateService.GetActivityState(stateId, activityId, agent, registration, cancellationToken);
+                IDocument document = await stateService.GetActivityState(stateId, activityId, agent, registration, cancellationToken);
 
-                if (stateDocument == null)
+                if (document == null)
                 {
                     return NotFound();
                 }

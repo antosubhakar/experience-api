@@ -4,22 +4,19 @@ namespace Doctrina.ExperienceApi.Data.Documents
 {
     public class Document : IDocument
     {
-        /// <summary>
-        /// Gets or sets the opaque quoted string.
-        /// </summary>
+        /// <inheritdoc />
         public string Tag { get; set; }
 
-        /// <summary>
-        /// Last Modified
-        /// </summary>
+        /// <inheritdoc />
         public DateTimeOffset? LastModified { get; set; }
 
-        /// <summary>
-        /// Content type of the content
-        /// </summary>
+        /// <inheritdoc />
         public string ContentType { get; set; }
 
+        /// <inheritdoc />
         public byte[] Content { get; set; }
+
+        /// <inheritdoc />
         public string Id { get; set; }
     }
 }

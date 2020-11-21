@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Net;
 
 namespace Doctrina.ExperienceApi.Server.Extensions
 {
@@ -10,6 +11,14 @@ namespace Doctrina.ExperienceApi.Server.Extensions
         {
             statusCode = -1;
             var headers = request.GetTypedHeaders();
+
+            if(request.Method == HttpMethods.Put
+            && headers.IfNoneMatch.Count == 0
+            && headers.IfMatch.Count == 0)
+            {
+                statusCode = StatusCodes.Status400BadRequest;
+                return true;
+            }
 
             if (headers.IfNoneMatch.Count > 0)
             {

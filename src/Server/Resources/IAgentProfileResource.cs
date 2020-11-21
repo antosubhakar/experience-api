@@ -1,5 +1,6 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Documents;
+using Doctrina.ExperienceApi.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,7 +14,7 @@ namespace Doctrina.ExperienceApi.Server.Resources
     public interface IAgentProfileResource
     {
         /// <summary>
-        /// Fetches Profile ids of all Profile documents for an Agent. 
+        /// Fetches Profile ids of all Profile documents for an Agent.
         /// </summary>
         /// <param name="agent">The agent limit by.</param>
         /// <param name="profileId">The id associated with the <see cref="AgentProfileDocument"/>.</param>
@@ -21,12 +22,12 @@ namespace Doctrina.ExperienceApi.Server.Resources
         Task<IDocument> GetAgentProfile(Agent agent, string profileId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Fetches Profile ids of all Profile documents for an Agent. 
+        /// Fetches Profile ids of all Profile documents for an Agent.
         /// </summary>
         /// <param name="agent">The agent limit by.</param>
         /// <param name="since">If specified, this limits to entries that have been stored or updated since the specified Timestamp (exclusive)</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        Task<ICollection<IDocument>> GetAgentProfiles(Agent agent, DateTimeOffset? since = null, CancellationToken cancellationToken = default);
+        Task<MultipleDocumentResult> GetAgentProfiles(Agent agent, DateTimeOffset? since = null, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Stores an document profile in the context of the specified <paramref name="agent"/>.

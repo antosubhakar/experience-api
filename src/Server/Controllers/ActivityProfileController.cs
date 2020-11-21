@@ -1,6 +1,8 @@
 ﻿using Doctrina.ExperienceApi.Data;
 using Doctrina.ExperienceApi.Data.Documents;
 using Doctrina.ExperienceApi.Server.Extensions;
+using Doctrina.ExperienceApi.Server.Models;
+using Doctrina.ExperienceApi.Server.Mvc.ActionResults;
 using Doctrina.ExperienceApi.Server.Mvc.Filters;
 using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
@@ -38,15 +40,19 @@ namespace Doctrina.ExperienceApi.Server.Controllers
         [HttpGet(Order = 1)]
         [HttpHead(Order = 1)]
         public async Task<IActionResult> GetProfile(
-            [BindRequired, FromQuery] string profileId,
             [BindRequired, FromQuery] Iri activityId,
+            [FromQuery] string profileId,
             [FromQuery] Guid? registration = null,
+            [FromQuery] DateTimeOffset? since = null,
             CancellationToken cancellationToken = default)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            if(string.IsNullOrEmpty(profileId))
+                return await GetProfiles(activityId, since, cancellationToken);
 
             IDocument profile = await _profileService.GetActivityProfile(activityId, profileId, registration, cancellationToken);
 
@@ -55,13 +61,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return NotFound();
             }
 
-            var result = new FileContentResult(profile.Content, profile.ContentType)
-            {
-                EntityTag = new EntityTagHeaderValue($"\"{profile.Tag}\""),
-                LastModified = profile.LastModified
-            };
-
-            return result;
+            return new DocumentResult(profile);
         }
 
         /// <summary>
@@ -70,9 +70,7 @@ namespace Doctrina.ExperienceApi.Server.Controllers
         /// <param name="activityId">The Activity id associated with these Profile documents.</param>
         /// <param name="since">Only ids of Profile documents stored since the specified Timestamp (exclusive) are returned.</param>
         /// <returns>200 OK, Array of Profile id(s)</returns>
-        [HttpGet(Order = 2)]
-        [HttpHead(Order = 2)]
-        public async Task<ActionResult<string[]>> GetProfiles(
+        private async Task<IActionResult> GetProfiles(
             [BindRequired, FromQuery] Iri activityId,
             [FromQuery] DateTimeOffset? since = null,
             CancellationToken cancellationToken = default)
@@ -82,19 +80,15 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            ICollection<IDocument> profiles = await _profileService.GetActivityProfiles(activityId, since, cancellationToken);
-                
-            if (profiles == null)
+            MultipleDocumentResult result = await _profileService.GetActivityProfiles(activityId, since, cancellationToken);
+
+            if (result.IsEmpty)
             {
                 return Ok(Array.Empty<string>());
             }
 
-            IEnumerable<string> ids = profiles.Select(x => x.Id);
-            string lastModified = profiles.OrderByDescending(x => x.LastModified)
-                .FirstOrDefault()?.LastModified?.ToString("o");
-
-            Response.Headers.Add("Last-Modified", lastModified);
-            return Ok(ids);
+            Response.Headers.Add("Last-Modified", result.LastModified?.ToString("o"));
+            return Ok(result.Ids);
         }
 
         /// <summary>
