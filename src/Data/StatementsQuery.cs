@@ -14,7 +14,7 @@ namespace Doctrina.ExperienceApi.Data
     public class StatementsQuery
     {
         /// <summary>
-        /// Id of Statement to fetch	
+        /// Id of Statement to fetch
         /// </summary>
         [FromQuery(Name = "statementId")]
         public Guid? StatementId { get; set; }
@@ -32,13 +32,13 @@ namespace Doctrina.ExperienceApi.Data
         public Agent Agent { get; set; }
 
         /// <summary>
-        /// Filter, only return Statements matching the specified Verb id.	
+        /// Filter, only return Statements matching the specified Verb id.
         /// </summary>
         [FromQuery(Name = "verb")]
         public Iri VerbId { get; set; }
 
         /// <summary>
-        /// Filter, only return Statements for which the Object of the Statement is an Activity with the specified id.	
+        /// Filter, only return Statements for which the Object of the Statement is an Activity with the specified id.
         /// </summary>
         [FromQuery(Name = "activity")]
         public Iri ActivityId { get; set; }
@@ -68,7 +68,7 @@ namespace Doctrina.ExperienceApi.Data
         public bool? RelatedAgents { get; set; }
 
         /// <summary>
-        /// Only Statements stored since the specified Timestamp (exclusive) are returned.	
+        /// Only Statements stored since the specified Timestamp (exclusive) are returned.
         /// </summary>
         [FromQuery(Name = "since")]
         public DateTimeOffset? Since { get; set; }
@@ -92,14 +92,14 @@ namespace Doctrina.ExperienceApi.Data
         public ResultFormat? Format { get; set; }
 
         /// <summary>
-        /// If true, return results in ascending order of stored time	
+        /// If true, return results in ascending order of stored time
         /// </summary>
         [FromQuery(Name = "ascending")]
         public bool? Ascending { get; set; }
 
         /// <summary>
         /// If <c>true</c>, the LRS uses the multipart response format and includes all attachments as described previously. <br />
-        /// If <c>false</c>, the LRS sends the prescribed response with Content-Type application/json and does not send attachment data.	
+        /// If <c>false</c>, the LRS sends the prescribed response with Content-Type application/json and does not send attachment data.
         /// </summary>
         [FromQuery(Name = "attachments")]
         public bool? Attachments { get; set; }

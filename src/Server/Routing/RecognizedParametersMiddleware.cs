@@ -29,7 +29,8 @@ namespace Doctrina.ExperienceApi.Server.Routing
             "activityId",
             "stateId",
             "more",
-            "cursor"
+            "cursor",
+            "method"
         };
 
         private readonly RequestDelegate _next;

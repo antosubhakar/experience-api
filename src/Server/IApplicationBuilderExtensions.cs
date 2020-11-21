@@ -8,7 +8,7 @@ namespace Doctrina.ExperienceApi.Server
     {
         public static IApplicationBuilder UseAlternateRequestSyntax(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<ApiExceptionMiddleware>();
+            return builder.UseMiddleware<AlternateRequestMiddleware>();
         }
 
         public static IApplicationBuilder UseUnrecognizedParameters(this IApplicationBuilder builder)

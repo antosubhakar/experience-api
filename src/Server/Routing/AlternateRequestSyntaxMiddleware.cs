@@ -54,7 +54,7 @@ namespace Doctrina.ExperienceApi.Server.Routing
             string methodQuery = request.Query["method"].FirstOrDefault()?.ToUpperInvariant();
             if (string.IsNullOrWhiteSpace(methodQuery))
             {
-                return Task.CompletedTask;
+                return _next(context);
             }
 
             if (request.Method.ToUpperInvariant() != "POST")
