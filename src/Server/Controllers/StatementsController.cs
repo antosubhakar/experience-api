@@ -43,13 +43,13 @@ namespace Doctrina.ExperienceApi.Server.Controllers
                 return BadRequest(ModelState);
             }
 
-            parameters.Format = parameters.Format ?? ResultFormat.Exact;
-            if (!StringValues.IsNullOrEmpty(Request.Headers[HeaderNames.AcceptLanguage]))
+            if (!StringValues.IsNullOrEmpty(Request.Headers[HeaderNames.AcceptLanguage])
+                && !parameters.Format.HasValue)
             {
                 parameters.Format = ResultFormat.Canonical;
             }
 
-            ResultFormat format = parameters.Format.Value;
+            ResultFormat format = parameters.Format ?? ResultFormat.Exact;
             bool attachments = parameters.Attachments.GetValueOrDefault();
 
             if (parameters.StatementId.HasValue || parameters.VoidedStatementId.HasValue)
