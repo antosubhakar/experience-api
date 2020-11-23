@@ -4,7 +4,6 @@ using Doctrina.ExperienceApi.Server.Mvc.Filters;
 using Doctrina.ExperienceApi.Server.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Net.Http.Headers;
 using System;
@@ -54,30 +53,38 @@ namespace Doctrina.ExperienceApi.Server.Controllers
 
             if (parameters.StatementId.HasValue || parameters.VoidedStatementId.HasValue)
             {
-                Task<Statement> statementTask = null;
-                if (parameters.StatementId.HasValue)
-                {
-                    Guid statementId = parameters.StatementId.Value;
-                    statementTask = _statementService.GetStatement(statementId, attachments, format, cancellationToken);
-                }
-                else if (parameters.VoidedStatementId.HasValue)
-                {
-                    Guid voidedStatementId = parameters.VoidedStatementId.Value;
-                    statementTask = _statementService.GetVoidedStatement(voidedStatementId, attachments, format, cancellationToken);
-                }
-
-                Statement statement = await statementTask;
-
-                if (statement == null)
-                {
-                    return NotFound();
-                }
-
-                return new StatementActionResult(statement, format);
+                return await GetStatement(parameters, format, attachments, cancellationToken);
             }
 
             StatementsResult result =  await _statementService.GetStatementsResult(parameters);
             return new StatementsActionResult(result, format, (bool)attachments);
+        }
+
+        /// <summary>
+        /// Gets single statement with attachment
+        /// </summary>
+        private async Task<IActionResult> GetStatement(StatementsQuery parameters, ResultFormat format, bool attachments, CancellationToken cancellationToken)
+        {
+            Task<Statement> statementTask = null;
+            if (parameters.StatementId.HasValue)
+            {
+                Guid statementId = parameters.StatementId.Value;
+                statementTask = _statementService.GetStatement(statementId, attachments, format, cancellationToken);
+            }
+            else if (parameters.VoidedStatementId.HasValue)
+            {
+                Guid voidedStatementId = parameters.VoidedStatementId.Value;
+                statementTask = _statementService.GetVoidedStatement(voidedStatementId, attachments, format, cancellationToken);
+            }
+
+            Statement statement = await statementTask;
+
+            if (statement == null)
+            {
+                return NotFound();
+            }
+
+            return new StatementActionResult(statement, format);
         }
 
         /// <summary>
